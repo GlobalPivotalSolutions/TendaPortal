@@ -1,0 +1,6 @@
+#!/bin/sh
+rm -rf ../conf/arch/lockFile
+rm -rf ../conf/arch/reset
+rm -rf ../conf/arch/done
+rm -rf ../logs/arch.log
+mkdir ../conf/arch/reset

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-core"
+   name="Arch core filters"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-core.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.filters.PrefixURLFilter"
+              name="Arch prefix URL filter"
+              point="org.apache.nutch.net.URLFilter">
+      <implementation id="AutchPrefixURLFilter"
+                      class="au.csiro.cass.arch.filters.PrefixURLFilter"/>
+   </extension>
+
+   <extension id="au.csiro.cass.arch.filters.Index"
+              name="Arch index filter"
+              point="org.apache.nutch.indexer.IndexingFilter">
+      <implementation id="ArchIndexFilter"
+                      class="au.csiro.cass.arch.filters.Index"/>
+   </extension>
+
+   <extension id="au.csiro.cass.arch.filters.ContentTypeBlocker"                  
+              name="Arch content type blocker"
+              point="org.apache.nutch.parse.Parser">
+       <implementation id="au.csiro.cass.arch.filters.ContentTypeBlocker"
+                       class="au.csiro.cass.arch.filters.ContentTypeBlocker">
+          <parameter name="contentType" value="*"/>
+       </implementation>
+   </extension>
+   
+   <extension id="au.csiro.cass.arch.filters.CanonicalLinkExtractor"
+              name="Canonical Link Extractor"
+              point="org.apache.nutch.parse.HtmlParseFilter">
+      <implementation id="au.csiro.cass.arch.filters.CanonicalLinkExtractor"
+         class="au.csiro.cass.arch.filters.CanonicalLinkExtractor">
+      </implementation>
+   </extension>
+
+
+</plugin>
+

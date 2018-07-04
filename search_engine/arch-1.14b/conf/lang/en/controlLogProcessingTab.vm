@@ -1,0 +1,239 @@
+<!-- ================================================================================================= -->
+<!--                                         LOG PROCESSING TAB                                        -->
+<!-- ================================================================================================= -->
+
+      <div data-dojo-type="dijit.layout.ContentPane" title="Log processing"  class="archTab">
+<fieldset>
+  <legend>Log processor parameters</legend>
+         <table class="options">
+           <tr id="tr.of.log.format">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Log format</td>
+             <td class="paramText">
+                <div id="log.format" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                                                          style="border-bottom: 1px dashed blue;">
+                 combined
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.log.format" style="display:none"><td colspan=3>
+             Log format name. This parameter must match “format” attribute (defined in plugin.xml file) of a log parser plugin
+             that is able to process logs of this type. Leave it blank to use Arch default log parser. The default log parser
+             works with logs in combined format. 
+           </td></tr>
+
+           <tr id="tr.of.logs">
+             <td class="paramLabel" colspan=2>Log directories</td>
+             <td class="paramText">
+               <textarea id="logs"  dojoType="dijit.form.Textarea" style="width:100%">
+               </textarea> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.logs" style="display:none"><td colspan=3>
+                If defined, this parameter overrides the default logs directory location. There can be
+                several remote log directories for one site, each with optional/multiple name filters
+                defined by Java regular expressions. The logs directory URI and filters are separated
+                by '|'. For example:<br><br>
+                logs = sftp://user:pass@server.com:22/var/logs/ | ^2012.+ | ^access.+<br><br>
+                This will look for logs in directory /var/logs/ on server server.com, using <i>user</i>
+                and <i>pass</i> for authentication. In this directory, it will only use files with names
+                starting with <i>2012</i> or <i>access</i>.<br>
+                The supported protocols are FILE, FTP, SFTP, FTPS, HTTP and HTTPS.
+           </td></tr>
+
+           <tr id="tr.of.log.length">
+             <td class="paramLabel" colspan=2>Max log length, days</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="365" smallDelta="30" largeDelta="365"
+                       constraints="{min:1,places:0}" id="log.length" name="log.length" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.log.length" style="display:none"><td colspan=3>
+                The log length to process, days. The latest log of this length will be taken if available.
+                E.g. if we have logs for the last 10 years, but this parameter is 365 days, only the latest
+                365 days are used to compute document scores.
+           </td></tr>
+           <tr id="tr.of.history.size">
+             <td class="paramLabel" colspan=2>History size</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="10" smallDelta="1" largeDelta="5"
+                       constraints="{min:1,places:0}" id="history.size" name="history.size" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.history.size" style="display:none"><td colspan=3>
+                The number of latest IP addresses to remember for a URL. This is needed to catch and filter
+                repeated accesses from same source. 
+           </td></tr>
+           <tr id="tr.of.max.hits.day">
+             <td class="paramLabel" colspan=2>Max hits/day for a page</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="5000" smallDelta="10" largeDelta="1000"
+                       constraints="{min:1,places:0}" id="max.hits.day" name="max.hits.day" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.max.hits.day" style="display:none"><td colspan=3>
+                Max counted accesses to a single page per day. The rest are ignored. 
+           </td></tr>
+           <tr id="tr.of.max.hits.ip.day">
+             <td class="paramLabel" colspan=2>Max hits/day for an IP</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="5" smallDelta="1" largeDelta="100"
+                       constraints="{min:1,places:0}" id="max.hits.ip.day" name="max.hits.ip.day" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.max.hits.ip.day" style="display:none"><td colspan=3>
+                Max hits counted per IP per URL per day. A filter to block impact on document scores
+                caused by repeated accesses from the same IP. Should be used with care as there may
+                be multiple users behind one IP address.
+           </td></tr>
+           <tr id="tr.of.max.score">
+             <td class="paramLabel" colspan=2>Max document weight</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="5" smallDelta="0.1" largeDelta="1"
+                       constraints="{min:1}" id="max.score" name="max.score" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.max.score" style="display:none"><td colspan=3>
+                Max document weight value to use for final weight normalisation in the DB. All document
+                weights are normalised to take values between 1 and max.score. Later Arch scoring filter
+                uses these weights to boost indexed documents.
+           </td></tr>
+           <tr id="tr.of.max.url.cache">
+             <td class="paramLabel" colspan=2>URL cache size</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="100000" smallDelta="1000" largeDelta="100000"
+                       constraints="{min:1000,places:0}" id="max.url.cache" name="max.url.cache" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.max.url.cache" style="display:none"><td colspan=3>
+                Max size of URLs cache. This cache is used when counting document accesses. A bigger cache
+                speeds up access counting, but requires more memory.
+           </td></tr>
+           <tr id="tr.of.index.file.names">
+             <td class="paramLabel" colspan=2>Index page synonyms</td>
+             <td class="paramText">
+               <textarea id="index.file.names"  dojoType="dijit.form.Textarea" style="width:100%">
+index.html index.htm home.html home.htm index.php home.php
+               </textarea> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.index.file.names" style="display:none"><td colspan=3>
+                File names of index pages that will be served by the web server if there is no file name
+                in the URL (e.g. http://www.mysite.com/)<br>
+                Example: index.php index.php3 index.php3 index.php3 index.html index.htm home.html home.htm 
+           </td></tr>
+           <tr id="tr.of.ignore.in.logs">
+             <td class="paramLabel" colspan=2>Ignore in logs</td>
+             <td class="paramText">
+                <textarea id="ignore.in.logs" dojoType="dijit.form.Textarea" style="width:100%">
+.jpg .gif .png .css .js
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.ignore.in.logs" style="display:none"><td colspan=3>
+                Ignore log records where file names have these extensions.<br>
+                Example: .jpg .gif .png .css .js
+           </td></tr>
+           <tr id="tr.of.sitemap.url">
+             <td class="paramLabel" colspan=2>Sitemap file URL</td>
+             <td class="paramText">
+                <div id="sitemap.url" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                                                          style="border-bottom: 1px dashed blue;">
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.sitemap.url" style="display:none"><td colspan=3>
+                A URL of file with pre-processed sitemap data that can be used as a
+                substitute to log processing. See more in Arch deployment manual about
+                automatically generating, encrypting and making available sitemaps for remote
+                sites. If this URL is provided, log files are ignored. If there are no log files
+                in the defailt location, (arch_home/conf/arch/sites/site_name/logs), Arch will
+                attempt to get a sitemap file from the default URL based on the site base url.
+           </td></tr>
+           <tr id="tr.of.delete.logs">
+             <td class="paramLabel" colspan=2>Delete log files after processing</td>
+             <td class="paramText">
+                <input id="delete.logs" dojoType="dijit.form.CheckBox" unchecked value="delete">
+             </td>     
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="delete.logs" style="display:none"><td colspan=3>
+                Delete log files after processing. Switching this on is convenient for setting
+                up automatic log processing. All you have to do is keep copying the latest log
+                files to the location where Arch expects them. Arch will find them, process and
+                delete.
+           </td></tr>
+        </table>
+</fieldset>
+<fieldset id="ip.filter.parameters">
+  <legend>IP filter parameters</legend>
+         <table class="options">
+           <tr id="tr.of.ip.filter">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Do IP filtering</td>
+             <td class="paramText">
+                <input id="ip.filter" dojoType="dijit.form.CheckBox" value="filter" checked>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.ip.filter" style="display:none"><td colspan=3>
+             Attempt to identify and ignore search engines and abuse based on IP stats. All IP based filtering can be
+             turned off by setting this parameter to off. This is not fatal, because robots accesses can still be filtered
+             out based on the client type, if this information is in the logs and robots do not masquerade as browsers. 
+           </td></tr>
+           <tr id="tr.of.max.hits.norm">
+             <td class="paramLabel" colspan=2>Threshold for hits/IP/page </td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="1000" smallDelta="1" largeDelta="100"
+                       constraints="{min:10,places:0}" id="max.hits.norm" name="max.hits.norm" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.max.hits.norm" style="display:none"><td colspan=3>
+                Max number of hits/IP/URL/day beyond which the IP is placed on the list to ignore.
+                Should be used carefuly because some pages, e.g. home pages may be requested often
+                in normal use.
+           </td></tr>
+           <tr id="tr.of.hits.threshold">
+             <td class="paramLabel" colspan=2>Access speed threshold</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="30" smallDelta="1" largeDelta="10"
+                       constraints="{min:2,places:0}" id="hits.threshold" name="hits.threshold" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.hits.threshold" style="display:none"><td colspan=3>
+                If an IP address generates more than this number of hits per the interval, it is
+                considered a search engine. For example, if this number is 30, IP address is blocked if
+                there are more than 30 accesses to text documents within the capture interval (below).
+           </td></tr>
+           <tr id="tr.of.capture.interval">
+             <td class="paramLabel" colspan=2>Capture interval</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="300" smallDelta="1" largeDelta="60"
+                       constraints="{min:5,places:0}" id="capture.interval" name="capture.interval" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.capture.interval" style="display:none"><td colspan=3>
+                This interval is used when identifying IP addresses (of crawlers) to ignore. If more hits
+                than a certain threshold has come from an IP address in a time interval shorter than 
+                capture.interval (in seconds), this IP address is considered belonging to a crawler and put
+                on a list to ignore. 
+           </td></tr>
+           <tr id="tr.of.max.ip.cache">
+             <td class="paramLabel" colspan=2>IP cache size</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="100000" smallDelta="1000" largeDelta="100000"
+                       constraints="{min:1000,places:0}" id="max.ip.cache" name="max.ip.cache" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.max.ip.cache" style="display:none"><td colspan=3>
+                Max size of IP address cache. This cache is used when computing a list of ignored IP addresses
+                with aim to count only accesses generated by human readers and exclude accesses generated by
+                search engine crawlers. A bigger cache speeds up ignored IPs list generation, but requires more
+                memory.
+           </td></tr>
+        </table>
+</fieldset>
+      </div>

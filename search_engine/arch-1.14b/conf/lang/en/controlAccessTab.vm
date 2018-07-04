@@ -1,0 +1,301 @@
+<!-- ================================================================================================= -->
+<!--                                           ACCESS CONTROL TAB                                            -->
+<!-- ================================================================================================= -->
+      <div data-dojo-type="dijit.layout.ContentPane" title="Access control" class="archTab">
+<fieldset>
+  <legend>Access control switch</legend>
+         <table class="options">
+
+           <tr id="tr.of.access.control.enabled">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel" width="150"></td>
+             <td class="paramText">
+               <input id="access.control.enabled" dojoType="dijit.form.CheckBox" value="access.control.enabled" checked><label for="access.control.enabled">Access control enabled</label>
+             </td>                       
+          </tr>
+          <tr class="helpRow" id="help.for.access.control.enabled" style="display:none"><td colspan=3>
+            Enable or disable Arch access control related features. It is strongly recommended to get indexing and search working before you
+            enable access control. If you set access control settings wrong, it will cause search problems. Disable access control to check if it is
+            causing problems.
+         </td></tr>
+       </table>
+</fieldset>
+
+<fieldset id="ip.based.access.control">
+  <legend>IP based access control</legend>
+         <table class="options">
+
+           <tr id="tr.of.allowed.ip.addresses">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">WHITE list of IP addresses</td>
+             <td class="paramText">
+                <textarea id="allowed.ip.addresses" dojoType="dijit.form.Textarea" style="width:100%">
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.allowed.ip.addresses" style="display:none"><td colspan=3>
+                
+                Optional WHITE list of privileged IP addresses regular expressions separated by spaces.
+                Requests coming from these addresses are let through, unless authentication is explicitly
+                requested. Configured below allowed user, group, site and area names are
+                automatically assigned to unauthenticated requests from IP addresses on this list.
+                Please note that regular expressions depend on whether IPv4 or IPv6 is used. Example for IPv4:
+                ^130\.155\.201\.106<br><br>
+                <b>Note</b> that parameters in this tab are used by the reference access control modules  (au.csiro.cass.arch.solr.Authenticator and au.csiro.cass.arch.solr.AdminAuthenticator) supplied with Arch.
+                You may want to replace them with your own to better serve your needs.
+           </td></tr>
+           <tr id="tr.of.blocked.ip.addresses">
+             <td class="paramLabel" colspan=2>BLACK List IP of addresses</td>
+             <td class="paramText">
+                <textarea id="blocked.ip.addresses" dojoType="dijit.form.Textarea" style="width:100%">
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.blocked.ip.addresses" style="display:none"><td colspan=3>
+                Optional BLACK list of blocked IP addresses. All requests coming from these addresses are rejected.
+                Please note that regular expressions depend on whether IPv4 or IPv6 is used.
+           </td></tr>
+           <tr id="tr.of.admin.ip.addresses">
+             <td class="paramLabel" colspan=2>Admin IP addresses</td>
+             <td class="paramText">
+                <textarea id="admin.ip.addresses" dojoType="dijit.form.Textarea" style="width:100%">
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.admin.ip.addresses" style="display:none"><td colspan=3>
+                REQUIRED! A list of IP address to allow admin access to Solr server from. Clients from these
+                addresses will have full unfiltered access to Solr server and will be able to updade and
+                delete the contents there. Note that if distributed crawling is performed, addresses of all
+                computers in the cluster have to be on this list.
+           </td></tr>
+           <tr id="tr.of.allowed.users">
+             <td class="paramLabel" colspan=2>White list users</td>
+             <td class="paramText">
+                <div id="allowed.users" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.allowed.users" style="display:none"><td colspan=3>
+                Optional list of user names assigned to unauthenticated requests coming from IP addresses
+                on the WHITE list. Use &quot;all&quot; to allow all user names.
+           </td></tr>
+           <tr id="tr.of.allowed.groups">
+             <td class="paramLabel" colspan=2>White list groups</td>
+             <td class="paramText">
+                <div id="allowed.groups" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.allowed.groups" style="display:none"><td colspan=3>
+                Optional list of group names assigned to unauthenticated requests coming from IP addresses
+                on the WHITE list. Use &quot;all&quot; to allow all group names.
+           </td></tr>
+           <tr id="tr.of.allowed.sites">
+             <td class="paramLabel" colspan=2>White list sites</td>
+             <td class="paramText">
+                <div id="allowed.sites" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.allowed.sites" style="display:none"><td colspan=3>
+                Optional list of group names assigned to unauthenticated requests coming from IP addresses
+                on the WHITE list. Use &quot;all&quot; to disble site filter. 
+           </td></tr>
+           <tr id="tr.of.allowed.areas">
+             <td class="paramLabel" colspan=2>White list areas</td>
+             <td class="paramText">
+                <div id="allowed.areas" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.allowed.areas" style="display:none"><td colspan=3>
+                Optional list of group names assigned to unauthenticated requests coming from IP addresses
+                on the WHITE list. Use &quot;all&quot; to disble area filter. 
+           </td></tr>
+           <tr id="tr.of.default.users">
+             <td class="paramLabel" colspan=2>Default users</td>
+             <td class="paramText">
+                <div id="default.users" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.default.users" style="display:none"><td colspan=3>
+                Optional list of user names assigned to unauthenticated requests coming from IP addresses
+                not matching white or black lists. Use &quot;all&quot; to allow all user names.
+           </td></tr>
+           <tr id="tr.of.default.groups">
+             <td class="paramLabel" colspan=2>Default groups</td>
+             <td class="paramText">
+                <div id="default.groups" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.default.groups" style="display:none"><td colspan=3>
+                Optional list of group names assigned to unauthenticated requests coming from IP addresses
+                not matching white or black lists. Use &quot;all&quot; to allow all group names.
+           </td></tr>
+           <tr id="tr.of.default.sites">
+             <td class="paramLabel" colspan=2>Default sites</td>
+             <td class="paramText">
+                <div id="default.sites" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.default.sites" style="display:none"><td colspan=3>
+                Optional list of group names assigned to unauthenticated requests coming from IP addresses
+                not matching white or black lists. Use &quot;all&quot; to disble site filter. 
+           </td></tr>
+           <tr id="tr.of.default.areas">
+             <td class="paramLabel" colspan=2>Default areas</td>
+             <td class="paramText">
+                <div id="default.areas" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                all
+                </div>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.default.areas" style="display:none"><td colspan=3>
+                 Optional list of group names assigned to unauthenticated requests coming from IP addresses
+                 not matching white or black lists. Use &quot;all&quot; to disble area filter. 
+           </td></tr>
+        </table>
+</fieldset>
+<fieldset>
+  <legend>Front-ends configuration</legend>
+         <table class="options">
+
+           <tr id="tr.of.frontend.profile">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramText">
+                 <b>Gateway profile records</b> (one per line)<br>
+                 <textarea id="frontend.profile" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.frontend.profile" style="display:none"><td colspan=3>
+         Note: UNLESS PARAMETER &quot;domain&quot; IS SENT WITH REQUEST, front-end authentication related
+         parameters are taken from the global (root) configuration file and must be declared there. If &quot;domain&quot;
+         is sent in request, it must match name of a site. All authentication related parameters will be taken from
+         that site configuration and access will be limited to that site data only.
+         <br><br>
+         Front-end profile records are expected by the Arch reference authentication 
+         plugin. It is likely that you will want to replace it with a plugin implementing authentication
+         method used in your organization. Your plugin may use a different configuration parameters set.
+         <br><br>
+         A front-end profile record defines front-end id, password, sites and areas that the front-end
+         is allowed to search and users and groups that are allowed to do search via this front-end. The fields
+         are separated by &quot;|&quot;. The required parameters are the id and password. The rest can be left blank.  
+         <br>Example: <br>myid | mypassword | site1 site2 | area1 area2 | group1 group2 | user1 user2
+         </td></tr>
+       </table>
+</fieldset>
+<fieldset id="authentication">
+  <legend>Authentication</legend>
+         <table class="options">
+           <tr id="tr.of.admin.user">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Admin user</td>
+             <td class="paramText">
+                <div id="admin.user" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                 
+                </div> 
+             </td>                       
+          </tr>
+         <tr class="helpRow" id="help.for.admin.user" style="display:none"><td colspan=3>
+             Name of the user who can change configuration of the site and/or the root configuration using this browser based configuration tool.
+             If this field is left blank, anyone can (provided they can access the configuration tool).
+             <br><br>
+             <b>Use with care!</b> If locked yourself out of access to this GUI, delete admin.user parameter
+             in your configuration files in ArchHome/conf/arch.      
+         </td></tr>
+         <tr id="tr.of.auth.groups.file">
+             <td class="paramLabel" colspan=2>User groups file</td>
+             <td class="paramText">
+                <div id="auth.groups.file" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                  /opt/arch/conf/arch/testPasswords.txt
+                </div> 
+             </td>                       
+         </tr>
+         <tr class="helpRow" id="help.for.auth.groups.file" style="display:none"><td colspan=3>
+                User password file. This is also a parameter required by Arch reference
+                authentication plugin implementing Apache file based authentication scheme.
+         </td></tr>
+
+         <tr id="tr.of.auth.passwords.file">
+             <td class="paramLabel" colspan=2>User groups file</td>
+             <td class="paramText">
+                <div id="auth.passwords.file" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                  /opt/arch/conf/arch/testGroups.txt
+                </div> 
+             </td>                       
+         </tr>
+
+         <tr class="helpRow" id="help.for.auth.passwords.file" style="display:none"><td colspan=3>
+                User groups file. This is also a parameter required by Arch reference
+                authentication plugin implementing Apache file based authentication scheme.
+         </td></tr>
+       </table>
+</fieldset>
+<fieldset id = "document.access.permissions">
+  <legend>Document access permissions</legend>
+         <table class="options">
+          <tr id="tr.of.permissions">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramText">
+                 <b>Access permission records</b> (one per line)<br>
+                 <textarea id="permissions" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.permissions" style="display:none"><td colspan=3>
+          This parameter is used to set access permissions for a file or folder (and by default,
+          its subfolders). These permissions make effect when covered documents are re-indexed.
+          Permissions record format is <br>
+          {f,d} | url | groups-R/O | groups-R/W | users-R/O | users-R/W | owners | {s,i}<br>
+          Here &quot;f&quot; or &quot;d&quot; stand for &quot;folder&quot; or &quot;document&quot; respectively; <br>
+          groups-R/O - a space separated list of user groups having R/O access;<br>
+          groups-R/W - a space separated list of user groups having R/W access;<br>
+          users-R/O - a space separated list of users having R/O access;<br>
+          users-R/W - a space separated list of users having R/W access;<br>
+          owners - a space separated list of users having administrator access;<br>
+          &quot;s&quot; or &quot;i&quot; stand for defined or inherited permissions mode respectively. If
+          inherited mode is set, all user and group lists, including administrators,
+          are inherited from the document/folder parent folder. This is the default mode and setting it only makes
+          sense if you want to temporarily disable the record.<br>
+          Example:<br>
+          d | http://www.atnf.csiro.au/internal/ | staff | staff | admin | admin | admin | s <br>
+          <b>For unrestricted search of all indexed documents:</b><br>
+          f | http://my.site.base.url/ | public | staff | guest | admin | admin | s <br>
+          It is recommended that you start with unrestricted access and restrict it after making sure that your authentication is working as expected.
+         </td></tr>
+       </table>
+</fieldset>
+
+      </div>

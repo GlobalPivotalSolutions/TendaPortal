@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<plugin
+   id="parse-text"
+   name="Text Parse Plug-in"
+   version="1.0.0"
+   provider-name="nutch.org">
+
+
+   <runtime>
+      <library name="parse-text.jar">
+         <export name="*"/>
+      </library>
+   </runtime>
+
+   <requires>
+      <import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="org.apache.nutch.parse.text"
+              name="TextParse"
+              point="org.apache.nutch.parse.Parser">
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/plain"/>
+        <parameter name="pathSuffix"  value="txt"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/csv"/>
+        <parameter name="pathSuffix"  value="csv"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-csrc"/>
+        <parameter name="pathSuffix"  value="c"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="application/x-wais-source"/>
+        <parameter name="pathSuffix"  value="src"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-vcard"/>
+        <parameter name="pathSuffix"  value="vcf"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-component"/>
+        <parameter name="pathSuffix"  value="htc"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-diff"/>
+        <parameter name="pathSuffix"  value="patch"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="application/x-sh"/>
+        <parameter name="pathSuffix"  value="sh"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="application/x-tex"/>
+        <parameter name="pathSuffix"  value="tex"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-python"/>
+        <parameter name="pathSuffix"  value="py"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/csv"/>
+        <parameter name="pathSuffix"  value="csv"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-c++src"/>
+        <parameter name="pathSuffix"  value="cc"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-c++src"/>
+        <parameter name="pathSuffix"  value="cpp"/>
+      </implementation>
+
+      <implementation id="org.apache.nutch.parse.text.TextParser"
+                      class="org.apache.nutch.parse.text.TextParser">
+        <parameter name="contentType" value="text/x-c++hdr"/>
+        <parameter name="pathSuffix"  value="hh"/>
+      </implementation>
+
+   </extension>
+
+</plugin>

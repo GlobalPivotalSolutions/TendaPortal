@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-mysql"
+   name="Arch MySQL plugin"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-mysql.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.sql.DBInterface"
+              name="Arch MySQL plugin"
+              point="au.csiro.cass.arch.sql.DBInterface">
+      <implementation id="DBInterfaceMySQL"
+                      class="au.csiro.cass.arch.sql.DBInterfaceMySQL">
+         <parameter name="database" value="MySQL"/>
+      </implementation>
+   </extension>
+
+</plugin>

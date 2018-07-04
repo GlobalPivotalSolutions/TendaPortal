@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-scanner"
+   name="Arch basic security scanner"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-scanner.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.security.Scanner"
+              name="Arch basic security scanner"
+              point="au.csiro.cass.arch.security.Scanner">
+      <implementation id="ArchBasicScanner"
+                      class="au.csiro.cass.arch.security.BasicScanner"/>
+   </extension>
+
+</plugin>
+

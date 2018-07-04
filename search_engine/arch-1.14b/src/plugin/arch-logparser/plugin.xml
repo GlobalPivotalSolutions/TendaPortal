@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-logparser"
+   name="Arch log line parser"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-logparser.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.logProcessing.LogLineParserCombined"
+              name="Arch combined format log line parser"
+              point="au.csiro.cass.arch.logProcessing.LogLineParser">
+      <implementation id="LogLineParserCombined"
+                      class="au.csiro.cass.arch.logProcessing.LogLineParserCombined">
+         <parameter name="format" value="combined"/>
+      </implementation>
+   </extension>
+
+   <extension id="au.csiro.cass.arch.logProcessing.LogLineParserIIS"
+              name="Arch IIS format log line parser"
+              point="au.csiro.cass.arch.logProcessing.LogLineParser">
+      <implementation id="LogLineParserIIS"
+                      class="au.csiro.cass.arch.logProcessing.LogLineParserIIS">
+         <parameter name="format" value="iis"/>
+      </implementation>
+   </extension>
+
+</plugin>

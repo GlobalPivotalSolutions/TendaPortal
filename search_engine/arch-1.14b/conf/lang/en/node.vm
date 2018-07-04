@@ -1,0 +1,31 @@
+
+#if ( $isRoot ) #set ( $site="_root_" ) #else #set ( $site=$node.site ) #end
+#if ( $node.canWrite( $user, $groups ) ) #set( $rw="rw" ) #else #set( $rw="ro" ) #end
+#set ( $url = $node.addWithDelim( $node.base, $node.path ) )
+#if ( !$isRoot ) #set ( $url = $node.addWithDelim( $url, $node.name ) ) #end
+#if ( $node.title ) #set( $title = $node.title ) #else #set( $title = "" ) #end
+#set( $label = $node.name )
+#if ( $node.label && $node.label.length > 0 ) #set( $label = $node.label ) #end
+#set ( $isFile = false )  
+#if ( $node.type.indexOf( 'f' ) >= 0 ) #set( $isFile = true ) #end
+
+
+#if ( $node )
+  <LI id="node.${site}.${node.id}" site="${node.site}" $rw
+
+  #if ( $isFile ) 
+   class='file' noChildren='true'>
+   <img style='visibility: hidden;' src='images/plus.gif'>
+   <img src='images/file.gif' title="$title">
+   <A target='_blank' style='font-size:1em;' href="$url"> $label </A>
+  </LI>
+  #else
+   class='folder'>
+    <img src='images/plus.gif'>
+    <img src='images/folder.gif' title="$title">
+      <A target='_blank' style='font-size:1em;' href="$url"> $label </A>
+   <UL></UL>
+  </LI>
+  #end
+#end 
+

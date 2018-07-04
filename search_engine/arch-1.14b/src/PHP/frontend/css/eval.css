@@ -1,0 +1,155 @@
+img { border:0px; }
+.loginBox { float:right; width:0.7em; font-family:algerian,courier; line-height:80%; border:1px solid #000; }
+h2
+{
+    font-size:1.2em;
+}
+
+body { FONT-FAMILY: "Lucida Grande","Trebuchet MS",Verdana,Helvetica,sans-serif; FONT-SIZE: 0.8em; }
+
+div.page
+{
+  background-image: url( '../images/bghor-blue.jpg' ) ;
+  padding-bottom: 0.5cm;
+}
+
+/*
+a.page:link { FONT-SIZE: 11px; font-weight: normal; color: #f53d00; text-decoration: none ; padding: 1px;}
+a.page:visited { FONT-SIZE: 11px; font-weight: normal; color: purple ; text-decoration: none ; padding: 1px;}
+a.page:hover { FONT-SIZE: 11px; font-weight: normal; color: blue; text-decoration: underline ;BACKGROUND-COLOR: orange;padding: 1px;}
+a.page:active { FONT-SIZE: 11px; font-weight: normal; color: purple ; text-decoration: none ;padding: 1px;}
+ */
+tr.pages, tr.restitle, tr.reslink, tr.resdesc 
+{
+  vertical-align: middle ; 
+}
+
+td.restitle a
+{
+ font-weight: bold ;
+ font-size: 0.9em; color: black ; 
+ text-decoration: none;
+}
+
+td.relevant a
+{
+ font-weight: bold ;
+ font-size: 0.9em; color: red ; 
+ text-decoration: none;
+}
+
+a.relevant
+{
+ /* font-weight: bold ; */
+ font-size: 0.8em; color: red ; 
+ text-decoration: none;
+}
+
+a.restitle
+{
+ /* font-weight: bold ; */
+ font-size: 0.8em; color: black ; 
+ text-decoration: none;
+}
+
+tr.reslink a
+{
+ font-size: 0.8em; 
+}
+
+span.thispage
+{
+  FONT-SIZE: 11px; color: black ;
+  text-decoration: none ; padding: 0.1cm; 
+}
+
+tr.pages td 
+{
+  height: 0.8cm ;
+  background-image: url( '../images/vgrad-blue.jpg' ) ;
+  text-align: center;
+  FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif ;
+  FONT-SIZE: 11px; color: black ;
+  font-weight: bold ;
+}
+
+tr.restitle td 
+{
+  height: 0.8cm ;
+  padding-left: 0.3cm;
+  padding-right: 0.3cm;
+  background-image: url( '../images/bghor-blue.jpg' ) ;
+}
+
+tr.reslink td 
+{
+  height: 0.8cm ;
+  padding-left: 0.3cm;
+  padding-right: 0.3cm;
+  background-color: white ;
+  padding-bottom: 0.3cm;
+}
+
+tr.resdesc td 
+{
+  FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif ;
+  FONT-SIZE: 0.7em; color: black ;
+  padding-left: 0.7cm;
+  padding-right: 0.3cm;
+  background-color: white ; 
+}
+
+div.pages span
+{
+  text-align: center;
+  vertical-align: middle;
+}
+
+td.pages
+{
+  padding-left: 0.2cm; 
+  FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif ;
+  FONT-SIZE: 12px;
+  FONT-WEIGHT: bold;
+}
+
+fieldset
+{ 
+	border: 1px solid;
+	border-top-width: 2px;
+	border-color: rgb(230,230,230);
+	border-top-color: #ABB8C7;
+	padding: 0 0 1em 0;
+	background-color: #F4F4F4;
+	margin-left: 0em;
+	width: auto;
+	margin-right: 0%;
+	padding-bottom: 0%;
+}
+
+legend
+{
+	color: white;
+	border: solid #8F8FB3;
+	border-width: 1px;
+	padding: 0.3em;
+	margin-bottom: 0.3em;
+	background-color: #ADADD9;
+	font-weight: bold;
+	letter-spacing: 0.2em;
+	font-size: 15px;
+	margin-top: 1em;
+    margin-left:  1em;
+    background-image: url( '../images/vgrad-blue.jpg' ) ;
+}
+
+.q 
+{
+  font-size: 0.8em;
+}
+
+a.queryLink { font-weight: bold; color: blue; text-decoration: none; padding-left: 0.4cm;}
+a.queryLink:visited { color: blue ; }
+a.queryLink:hover { color: red; text-decoration: underline; }
+
+.highlight { font-weight: bold ; }

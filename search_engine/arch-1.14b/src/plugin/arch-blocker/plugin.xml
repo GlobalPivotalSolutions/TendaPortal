@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-blocker"
+   name="Arch basic page blocker"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-blocker.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.security.BasicBlocker"
+              name="Arch basic page blocker"
+              point="au.csiro.cass.arch.security.Pruner">
+      <implementation id="ArchBasicBlocker"
+                      class="au.csiro.cass.arch.security.BasicBlocker"/>
+   </extension>
+   
+   <extension id="au.csiro.cass.arch.security.CSIROURLFilter"
+              name="Arch CSIRO URL filter"
+              point="org.apache.nutch.net.URLFilter">
+      <implementation id="AutchCSIROURLFilter"
+                      class="au.csiro.cass.arch.security.CSIROURLFilter"/>
+   </extension>
+
+
+</plugin>
+
+

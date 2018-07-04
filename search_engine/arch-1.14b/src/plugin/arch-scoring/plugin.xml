@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-scoring"
+   name="Arch scoring filter"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-scoring.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.filters.scoring.Scoring"
+              name="Arch scoring filter"
+              point="org.apache.nutch.scoring.ScoringFilter">
+      <implementation id="ArchScoringFilter"
+                      class="au.csiro.cass.arch.filters.scoring.Scoring"/>
+   </extension>
+
+</plugin>
+

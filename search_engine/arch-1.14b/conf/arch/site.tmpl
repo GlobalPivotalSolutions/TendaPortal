@@ -1,0 +1,359 @@
+#===============================================================================
+#                                   General
+#===============================================================================
+
+# Base URL of this site. REQUIRED!
+
+url = http://www.mysite.com/
+
+
+#===============================================================================
+#                                Database access
+#===============================================================================
+
+# These parameters are normally defined in the global configuration file, but
+# each site can override them and keep its data in another database.
+
+# Database plugin module to use. This parameter must match “database” attribute
+# (defined in plugin.xml file) of a database interface plugin. A MySQL based
+# plugin is included with Arch, but any other relational database plugin can be
+# used as long as available. For a reference implementation, please see the MySQL
+# plugin.
+
+#database = MySQL
+
+
+# Address of a database where to keep data. Note that DB related parameters
+# can be re-defined for each site. Sites can store their data in different
+# databases.
+
+#target.db = jdbc:mysql://localhost/arch?user=<user name>&password=<password>
+
+
+# DB driver to use 
+
+#db.driver = com.mysql.jdbc.Driver
+
+
+#===============================================================================
+#                        Area configuration parameters                      
+#===============================================================================
+
+# THERE CAN BE AS MANY AREAS AS DESIRED, AS LONG AS NAMES ARE DIFFERENT
+
+
+# Area name. Must be alphanumeric, up to 30 characters long.
+# Use this name to define other area configuration parameters. 
+# area = <area-name>
+
+area = documentation
+
+
+# Area status. Area can be either enabled or disabled. If disabled, it is not
+# included in crawling and the index.
+# enabled.<area-name> = {on,off}
+
+enabled.documentation = on
+
+
+# Roots - urls used as starting point to crawl the area. There is no practical
+# limit on the number of roots, inclusions or exclusions per area.
+# root.<area-name> = http://www.mysite.com/myarea/root-1
+# root.<area-name> = http://www.mysite.com/myarea/root-2
+
+root.documentation = http://www.mysite.com/myarea/root-1
+root.documentation = http://www.mysite.com/myarea/root-2
+
+
+# Inclusions - prefixes of urls to include in the area. Inclusions and
+# exclusions combined define contents of the area.
+# A url is included in the area if it is a root or matches (starts with) at
+# least one inclusion and does not match any exclusions.
+# include.<area-name> = http://www.mysite.com/myarea/include-1
+# include.<area-name> = http://www.mysite.com/myarea/include-2
+
+include.documentation = http://www.mysite.com/myarea/include-1
+include.documentation = http://www.mysite.com/myarea/include-2
+
+
+# Exclusions - prefixes of urls to exclude from the area.
+# A url is excluded from the area if it matches (starts with) at elast 
+# one exclusion. This allows to exclude certain subtrees of trees
+# defined by includes.
+# exclude.<area-name> = http://www.mysite.com/myarea/exclude-1
+# exclude.<area-name> = http://www.mysite.com/myarea/exclude-2
+
+exclude.documentation = http://www.mysite.com/myarea/include-1/exclude-1
+exclude.documentation = http://www.mysite.com/myarea/include-1/exclude-2
+
+
+# Re-indexing interval (days) with weekdays on which re-indexing is allowed.
+# interval.<area-name> = NN [,sun][,mon][,tue][,wed][,thu][,fri][,sat]
+# For example, to re-index area approx. every 20 days, but only on weekends:
+# interval.<area-name> = 20, sat, sun
+
+interval.documentation = 20, sat, sun
+
+
+# Default crawling depth. Defines how many crawling iterations to do by default
+# when indexing an area. Each area can overwrite this parameter. After deploying
+# Arch, it is recommended to do a trial crawl with shallow depth, e.g. 2.
+# If everything works, delete index directories, set the depth to a desired
+# value and do a production crawl.
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# NOTE: this parameter is ignored in parallel crawling (the global value is used)
+# depth.<area-name> = 20
+
+depth.documentation = 20
+
+
+# Default max number of urls to fetch on each iteration. This is passed to Nutch
+# as the topN parameter.
+# Note: if defined, then the total size of an area index is limited to the depth 
+# multiplied by max.urls
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# NOTE: this parameter is ignored in parallel crawling (the global value is used)
+# max.urls.<area-name> = -1
+
+max.urls.documentation = -1
+
+
+# Number of concurrent threads to use for crawling
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# NOTE: this parameter is ignored in parallel crawling (the global value is used)
+# threads.<area-name> = 10 
+
+threads.documentation = 50 
+
+#===============================================================================
+#                  Loglinks area                    
+#===============================================================================
+
+# This area controls processing of links found in site logs, but not fetched
+# by the crawler (e.g. isolated, orphan pages).
+
+# Area name. Always "loglinks".
+
+area = loglinks
+
+# Area status. Area can be either enabled or disabled. If disabled, it is not
+# included in crawling and the index.
+# enabled.<area-name> = {on,off}
+
+enabled.loglinks = on
+
+# Depth of crawling. Note that setting this parameter to more than 2 will lead
+# to high ovelaps with the sets of URLs already crawled.
+
+depth.loglinks = 1
+
+# Crawling interval
+
+interval.loglinks = 1
+ 
+#===============================================================================
+#                        Bookmarks configuration parameters                      
+#===============================================================================
+
+# Each site can have a bookmarks area. This is a set of heterogenious URLs.
+# No filtering is done. All bookmarks receive equal scores. If fetching of a
+# bookmark fails, no re-fetching is done until next crawl.
+
+# Area name. Always "bookmarks".
+
+area = bookmarks
+
+# Area status. Area can be either enabled or disabled. If disabled, it is not
+# included in crawling and the index.
+# enabled.<area-name> = {on,off}
+
+enabled.bookmarks = on
+
+# Bookmark files - files containing bookmark URLs. Adding or removing files,
+# or changing their names triggers re-indexing of bookmarks. If relative paths
+# are used, they must be based on the directory where Arch is started.
+
+file.bookmarks = /opt/arch/data/sites/mySite/documentUrls.txt
+
+# Re-indexing interval (days) with weekdays on which re-indexing is allowed.
+# interval.<area-name> = NN [,sun][,mon][,tue][,wed][,thu][,fri][,sat]
+# For example, to re-index area approx. every 20 days, but only on weekends:
+# interval.<area-name> = 20, sat, sun
+
+interval.bookmarks = 1
+
+# Number of concurrent threads to use for crawling
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# threads.<area-name> = 10 
+
+threads.bookmarks = 50
+
+# Define who can read URLs indexed as bookmarks. See more about security in the
+# security section below.
+
+groupsread.bookmarks = staff public
+usersread.bookmarks = me
+ 
+
+#===============================================================================
+#                                Log processing
+#===============================================================================
+
+# The parameters in this section can override the parameteres in the global
+# configuration file.
+
+# Log format name. This parameter must match “format” attribute (defined in
+# plugin.xml) file of a log parser plugin that is able to process logs of this
+# type. The default arch log parser works with logs in combined format. 
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each site.
+
+log.format = combined
+
+# The log length to process, days. The latest log of this length will be taken
+# if available. E.g. if we have logs for the last 10 years, but this parameter
+# is 365 days, only the latest 365 days are used to compute document scores.
+
+log.length = 365
+
+# Attempt to identify and ignore search engines and abuse based on IP stats.
+# All IP based filtering can be turned off by setting this parameter to off.
+# This is not fatal, because robots accesses can still be filtered out based
+# on the client type, if this information is in the logs and robots do not
+# masquerade as browsers. 
+
+ip.filter = on
+
+
+# File names of index pages that will be served by the web server if there is
+# no file name in the URL (e.g. http://www.mysite.com/) 
+
+index.file.names = index.html index.htm home.html home.htm index.php home.php
+
+# Ignore log records where file names have these extensions.
+
+ignore.in.logs = jpg .gif .png .css .js
+
+
+#===============================================================================
+#                                   Security
+#===============================================================================
+
+# Permissions. This parameter is used to set access permissions for a file or
+# folder (and by default, it’s subfolders). These permissions make effect when
+# covered documents are re-indexed.
+# permissions = {f,d} | url | groups-R/O | groups-R/W | users-R/O | users-R/W |
+# owners | {s,i}
+# Here ‘f’ or ‘d’ stand for “folder” or “document” respectively;
+# groups-R/O – a space separated list of user groups having R/O access;
+# groups-R/W – a space separated list of user groups having R/W access;
+# users-R/O – a space separated list of users having R/O access;
+# users-R/W – a space separated list of users having R/W access;
+# owners – a space separated list of users having administrator access;
+# ‘s’ or ‘i’ stand for defined or inherited permissions mode respectively. If
+# inherited mode is set, all user and group lists, including administrators,
+# are inherited from the document/folder parent folder. 
+
+permissions = d | http://www.atnf.csiro.au/internal/ | staff | staff | admin | admin | admin | s 
+
+
+# Permissions are controlled a bit differently for bookmarks because bookmarks
+# are a set of miscellaneous urls that do not have a hierarchical structure
+# that a web site has.
+
+# To give access to bookmarks to a limited set of users:
+
+usersread.bookmarks = user1 user2
+
+# To give access to bookmarks to a limited set of user groups:
+
+groupsread.bookmarks = group1 group2 group3
+
+
+# The permissions parameter is the only parameter that affects indexing.
+# All other security parameters (below) are used on access stage.
+
+# NOTE: UNLESS PARAMETER “DOMAIN” IS SENT WITH REQUEST, all authentication
+# related parameters are taken from the global configuration file and must
+# be declared there. If “domain” is sent in request, it must match name of a
+# site. All authentication related parameters will be taken from that site
+# configuration file and access will be limited to that site data only.
+
+# Authentication scheme. This parameter helps to find a proper authentication
+# plugin to use for authentication in JSP interface. Arch searches for a plugin
+# that has an attribute “scheme” (declared in plugin.xml) matching the
+# authentication.scheme parameter. If such plugin is found, it is used for 
+# authentication.
+
+authentication.scheme = file
+
+# NOTE: frontent.profile parameter is expected by Arch reference authentication 
+# plugin. It is very likely that you will want to replace it with a plugin 
+# implementing authentication method used in your organization. Your plugin may 
+# use a different configuration parameters set.
+#
+# Front-end search profile parameter defines front-end id, password, sites and
+# areas that the front-end is allowed to search and users and groups that are
+# allowed to do search via this front-end. The fields are separated by ‘|’. The 
+# required parameters are the id and password. The rest can be left blank.  
+# frontend.profile = id | password | site1 site2 | area1 area2 | group1 group2 | 
+# user1 user2
+
+frontend.profile = global | pass1
+
+# Users and groups files. This is also a parameter required by Arch reference
+# authentication plugin implementing Apache file based authentication scheme.
+
+auth.passwords.file = /arch/data/testPasswords.txt
+auth.groups.file = /arch/data/testGroups.txt
+
+#===============================================================================
+#                                Notifications
+#===============================================================================
+
+# This set of parameters may override parameters in the global config file. If
+# they are present here, email messages related to this site are sent to address
+# defined here and their text is not included in the combined message sent to the
+# address configured in the global config file. To cause sending a separate email
+# for this site, define at least mail.recipient parameter here. The rest are
+# optional, as long as they are defined in the global config file.
+
+# Level of details in emeail messages: DEBUG, INFO, WARN, ERROR or OFF.
+# DEBUG level is most detailed, OFF switches email notifications OFF.
+# Please note that email notifications are not designed to provide detailed reports.
+# To get details, see log files. 
+
+mail.level = INFO
+
+# Mail protocol to use. Optional. The default value is smtp.
+
+mail.transport.protocol = smtp 
+
+# Mail server address. Has to be defined either here or in the global config file.
+
+mail.host = mail.mycompany.com
+
+# Mail user name, if mail server requires authentication.
+
+mail.user = itsme
+
+# Mail user password, if mail server requires authentication.
+
+mail.pass = mypassword
+
+# Email message subject to use. Optional. The default value is 
+# Arch indexing report
+
+mail.subject = My message from Arch
+
+# Adresses of recipients. This parameter is required to switch per-site email ON.
+# If it is not defined, email message body for this site is included in the
+# "global" message sent in accordance with the global config file parameters.
+# There can be multiple recipients separated by ';', ':' or ','.
+
+mail.recipient = address1@mycompany.com; address2@anothercompany.com
+

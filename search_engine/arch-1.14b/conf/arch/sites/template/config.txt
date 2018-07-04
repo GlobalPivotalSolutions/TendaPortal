@@ -1,0 +1,591 @@
+#===============================================================================
+#                                   General
+#===============================================================================
+
+# Base URL of this site. REQUIRED! If provided here, it overrides the value 
+# defined in Arch crawling script ($ARCH_HOME/bin/arch), if any.
+
+#url = http://www.mysite.com/
+
+
+#===============================================================================
+#                                Database access
+#===============================================================================
+
+# These parameters are normally defined in the global configuration file, but
+# each site can override them and keep its data in its own database.
+
+# Database plugin module to use. This parameter must match “database” attribute
+# (defined in plugin.xml file) of a database interface plugin. A MySQL based
+# plugin is included with Arch, but any other relational database plugin can be
+# used as long as available. For a reference implementation, please see the MySQL
+# plugin.
+
+#database = MySQL
+
+
+# Address of a database where to keep data. Note that DB related parameters
+# can be re-defined for each site. Sites can store their data in different
+# databases.
+
+#target.db = jdbc:mysql://localhost/arch?user=<user name>&password=<password>
+
+
+# DB driver to use 
+
+#db.driver = com.mysql.jdbc.Driver
+
+#===============================================================================
+#                                Faceted search 
+#===============================================================================
+
+# To switch ON faceted search, just set at least one of the parameters below
+# to true. Faceting parameters set for sites override root configuration if
+# parameter "domain" is used in the request. Another method to  override faceting
+# settings is to add facet=true and other Solr faceting parameters to the request.
+# If Arch finds a "facet" field in request, it ignores configuration parameters.
+# Set facet.sites and facet.areas to true if you have several sites and areas. 
+
+facet.sites = true 
+facet.areas = false
+facet.formats = true 
+
+
+#===============================================================================
+#                        Area configuration parameters                      
+#===============================================================================
+
+# THERE CAN BE AS MANY AREAS AS DESIRED, AS LONG AS NAMES ARE VALID and DIFFERENT
+
+
+# Area name. Must be alphanumeric, up to 30 characters long.
+# Use this name to define other area configuration parameters. 
+# area = <area-name>
+
+area = main
+
+
+# Area status. Area can be either enabled or disabled. If disabled, it is not
+# included in crawling and the index.
+# enabled.<area-name> = {on,off}
+
+enabled.main = on
+
+
+# Roots - urls used as starting point to crawl the area. There is no practical
+# limit on the number of roots, inclusions or exclusions per area.
+# Parameters here override values provided in Arch crawling script.
+# root.<area-name> = http://www.mysite.com/myarea/root-1
+# root.<area-name> = http://www.mysite.com/myarea/root-2
+
+#root.main = http://www.mysite.com/myarea/root-1
+#root.main = http://www.mysite.com/myarea/root-2
+
+# Inclusions - prefixes of urls to include in the area. Inclusions and
+# exclusions combined define contents of the area.
+# A url is included in the area if it is a root or matches (starts with) at
+# least one inclusion and does not match any exclusions.
+# include.<area-name> = http://www.mysite.com/myarea/include-1
+# include.<area-name> = http://www.mysite.com/myarea/include-2
+
+#include.main = http://www.mysite.com/myarea/include-1
+#include.main = http://www.mysite.com/myarea/include-2
+
+
+# Exclusions - prefixes of urls to exclude from the area.
+# A url is excluded from the area if it matches (starts with) at elast 
+# one exclusion. This allows to exclude certain subtrees of trees
+# defined by includes.
+# exclude.<area-name> = http://www.mysite.com/myarea/exclude-1
+# exclude.<area-name> = http://www.mysite.com/myarea/exclude-2
+
+#exclude.main = http://www.mysite.com/myarea/include-1/exclude-1
+#exclude.main = http://www.mysite.com/myarea/include-1/exclude-2
+
+
+# Re-indexing interval (days) with weekdays on which re-indexing is allowed.
+# interval.<area-name> = NN [,sun][,mon][,tue][,wed][,thu][,fri][,sat]
+# For example, to re-index area approx. every 20 days, but only on weekends:
+# interval.<area-name> = 20, sat, sun
+# The default value is 0, which means that the area will be re-crawled each
+# time Arch is started.
+
+#interval.main = 20, sat, sun
+
+
+# Default crawling depth. Defines how many crawling iterations to do by default
+# when indexing an area. Each area can overwrite this parameter. After deploying
+# Arch, it is recommended to do a trial crawl with shallow depth, e.g. 2.
+# If everything works, delete index directories, set the depth to a desired
+# value and do a production crawl.
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# NOTE: this parameter is ignored in parallel crawling (the global value is used)
+# depth.<area-name> = 20
+# Overrides value provided in Arch crawling script.
+
+# depth.main = 20
+
+
+# Default max number of urls to fetch on each iteration. This is passed to Nutch
+# as the topN parameter.
+# Note: if defined, then the total size of an area index is limited to the depth 
+# multiplied by max.urls
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# NOTE: this parameter is ignored in parallel crawling (the global value is used)
+# max.urls.<area-name> = -1
+# Overrides value provided in Arch crawling script.
+
+#max.urls.main = -1
+
+
+# Number of concurrent threads to use for crawling
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# NOTE: this parameter is ignored in parallel crawling (the global value is used)
+# threads.<area-name> = 10 
+# Overrides value provided in Arch crawling script.
+
+# threads.main = 50 
+
+#===============================================================================
+#                  Loglinks area                    
+#===============================================================================
+
+# This area controls processing of links found in site logs, but not fetched
+# by the crawler (e.g. isolated, orphaned pages).
+
+# Area name. Always "loglinks".
+
+area = loglinks
+
+# Area status. Area can be either enabled or disabled. If disabled, it is not
+# included in crawling and the index.
+# enabled.<area-name> = {on,off}
+
+enabled.loglinks = on
+
+# Depth of crawling. Note that setting this parameter to more than 2 will lead
+# to high ovelaps with the sets of URLs already crawled.
+
+depth.loglinks = 2
+
+# Crawling interval
+
+#interval.loglinks = 1
+
+# Exclude irrelevant URLs, such as those of images, css, scripts etc., from
+# counting. Note that only paths should be provided, as in the examples below.
+
+#exclude.loglinks = /modules/
+#exclude.loglinks = /scripts/
+#exclude.loglinks = /images/
+#exclude.loglinks = /css/
+ 
+#===============================================================================
+#                        Bookmarks configuration parameters                      
+#===============================================================================
+
+# Each site can have a bookmarks area. This is a set of heterogenious URLs.
+# No filtering is done. All bookmarks receive equal scores. If fetching of a
+# bookmark fails, no re-fetching is done until next crawl.
+
+# Area name. Always "bookmarks".
+
+area = bookmarks
+
+# Area status. Area can be either enabled or disabled. If disabled, it is not
+# included in crawling and the index.
+# enabled.<area-name> = {on,off}
+
+enabled.bookmarks = on
+
+# Bookmark files - files containing bookmark URLs. Adding or removing files,
+# or changing their names triggers re-indexing of bookmarks. If relative paths
+# are used, they must be based on the directory where Arch is started.
+# The default bookmarks file is bookmarks.txt in site configuration directory
+
+#file.bookmarks = /opt/arch/conf/arch/sites/mySite/bookmarks.txt
+
+# Re-indexing interval (days) with weekdays on which re-indexing is allowed.
+# interval.<area-name> = NN [,sun][,mon][,tue][,wed][,thu][,fri][,sat]
+# For example, to re-index area approx. every 20 days, but only on weekends:
+# interval.<area-name> = 20, sat, sun
+
+interval.bookmarks = 1
+
+# Number of concurrent threads to use for crawling
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each area.
+# threads.<area-name> = 10 
+
+threads.bookmarks = 50
+
+# Define who can read URLs indexed as bookmarks. See more about security in the
+# security section below.
+
+groupsread.bookmarks = staff public
+usersread.bookmarks = me
+ 
+
+#===============================================================================
+#                                Log processing
+#===============================================================================
+
+# The parameters in this section can override the parameteres in the global
+# configuration file.
+
+# Log format name. This parameter must match “format” attribute (defined in
+# plugin.xml) file of a log parser plugin that is able to process logs of this
+# type. The default arch log parser works with logs in combined format. 
+# A global value for this parameter can be defined in the global configuration
+# file and re-defined for each site.
+
+log.format = combined
+
+# The log length to process, days. The latest log of this length will be taken
+# if available. E.g. if we have logs for the last 10 years, but this parameter
+# is 365 days, only the latest 365 days are used to compute document scores.
+
+log.length = 365
+
+# Attempt to identify and ignore search engines and abuse based on IP stats.
+# All IP based filtering can be turned off by setting this parameter to off.
+# This is not fatal, because robots accesses can still be filtered out based
+# on the client type, if this information is in the logs and robots do not
+# masquerade as browsers. 
+
+ip.filter = on
+
+
+# A URL of file with pre-processed sitemap data that can be used as a
+# substitute to log processing. See more in Arch deployment manual about
+# generating, encrypting and making available sitemaps for remote sites. If
+# this URL is provided, log files are ignored. If there are no log files in the
+# defailt location, (arch_home/conf/arch/sites/site_name/logs), Arch will
+# attempt to get a sitemap file from the default URL, as in the example below.
+
+# sitemap.url = http://mySite.base.url/arch/sitemap.dat
+
+# Delete log files after processing. Switching this on is convenient for setting
+# up automatic log processing. All you have to do is keep copying the latest log
+# files to the location where Arch expects them. Arch will find them, process and
+# delete.
+
+delete.logs = false
+
+# Location of log files. Can be a local or remote directory with a number of 
+# file masks defined by regular expressions. If no file masks are provided, all 
+# files match. Files found in this directory must be web server log files of 
+# this log site. Multiple locations can be used simultaneously. Examples:
+
+#logs = file:///var/logs/www.atnf.csiro.au/ | ^latest.+ | ^access.2018-.+ 
+#logs = sftp://arch:mypass@myhost:22/var/log/www.atnf.csiro.au/ | ^access\.log-2018.+
+
+#===============================================================================
+#                                Access control
+#===============================================================================
+
+# Permissions. This parameter is used to set access permissions for a file or
+# folder (and by default, it’s subfolders). These permissions make effect when
+# covered documents are re-indexed.
+# permissions = {f,d} | url | groups-R/O | groups-R/W | users-R/O | users-R/W |
+# owners | {s,i}
+# Here ‘f’ or ‘d’ stand for “folder” or “document” respectively;
+# groups-R/O – a space separated list of user groups having R/O access;
+# groups-R/W – a space separated list of user groups having R/W access;
+# users-R/O – a space separated list of users having R/O access;
+# users-R/W – a space separated list of users having R/W access;
+# owners – a space separated list of users having administrator access;
+# ‘s’ or ‘i’ stand for defined or inherited permissions mode respectively. If
+# inherited mode is set, all user and group lists, including administrators,
+# are inherited from the document/folder parent folder. 
+# The line below gives public reading access to subtrees of the base URL,
+# unless exceptions are defined below
+# The ${url} stands for the site base url defined above
+
+permissions = d | ${url} | public | staff | admin | admin | admin | s 
+
+#permissions = d | ${url}/internal/ | staff | staff | admin | admin | admin | s 
+
+
+# Permissions are controlled a bit differently for bookmarks because bookmarks
+# are a set of miscellaneous urls that do not have a hierarchical structure
+# that a web site has.
+
+# To give access to bookmarks to a limited set of users:
+
+usersread.bookmarks = user1 user2
+
+# To give access to bookmarks to a limited set of user groups:
+
+groupsread.bookmarks = public
+groupsread.bookmarks = group1 group2 group3
+
+
+# The permissions parameter is the only parameter that affects indexing.
+# All other security parameters (below) are used on access stage.
+
+# NOTE: UNLESS PARAMETER “DOMAIN” IS SENT WITH REQUEST, all authentication
+# related parameters are taken from the global configuration file and must
+# be declared there. If “domain” is sent in request, it must match name of a
+# site. All authentication related parameters will be taken from that site
+# configuration file and access will be limited to that site data only.
+
+# Authentication scheme. This parameter helps to find a proper authentication
+# plugin to use for authentication in JSP interface. Arch searches for a plugin
+# that has an attribute “scheme” (declared in plugin.xml) matching the
+# authentication.scheme parameter. If such plugin is found, it is used for 
+# authentication.
+
+authentication.scheme = file
+
+# NOTE: frontent.profile parameter is expected by Arch reference authentication 
+# plugin. It is very likely that you will want to replace it with a plugin 
+# implementing authentication method used in your organization. Your plugin may 
+# use a different configuration parameters set.
+#
+# Front-end search profile parameter defines front-end id, password, sites and
+# areas that the front-end is allowed to search and users and groups that are
+# allowed to do search via this front-end. The fields are separated by ‘|’. The 
+# required parameters are the id and password. The rest can be left blank.  
+# frontend.profile = id | password | site1 site2 | area1 area2 | group1 group2 | 
+# user1 user2
+
+frontend.profile = global | pass1
+
+# Users and groups files. This is also a parameter required by Arch reference
+# authentication plugin implementing Apache file based authentication scheme.
+
+auth.passwords.file = /arch/data/testPasswords.txt
+auth.groups.file = /arch/data/testGroups.txt
+
+
+#===============================================================================
+#                     Security scanning and document cleaning
+#===============================================================================
+
+# Enable or disable Arch security scanning and document cleaning related features.
+# Arch can monitor your site for potential threats, new and changed pages, scripts
+# and links. You can define clues to look for and Arch will notify you when it
+# finds something. However, security scanning has a cost because extra processing
+# is involved. For better protection, it is desirable to scan not only output
+# pages (such as those produced by PHP), but the source (PHP) scripts as well. If
+# you do not want to do security scanning or not ready to configure scanning
+# parameters, just disable security scanning for now.
+# It is recommended that scanning is switched off during first crawl, else it will
+# generate too many alerts, as every page and link will be new to it.
+
+scan.enabled = false
+
+
+# Output (whatever the browser or the crawler receives) of pages with these file
+# types will be scanned. Type in file types separated by space.
+
+scan.file.types = htm html php php3 php4 php5 asp aspx jsp do
+
+
+# Source code of pages with these file types will be scanned. Note that a way to
+# download this source code must be provided. See scan.source.access.url parameter.
+# Type in file types separated by space.
+  
+scan.src.file.types = php php3 php4 php5
+
+
+# Output (whatever the browser or the crawler receives) of pages with these content
+# types will be scanned. Type in content types separated by space or pipe character.
+
+scan.content.types = text/html | text/javascript
+
+
+# Source code of pages with these content types will be scanned. Note that a way to
+# download this source code must be provided. Type in content types separated by
+# space.
+
+scan.src.content.types = text/html text/javascript
+
+
+# To scan sources of web pages, it must be possible to download them as they
+# are before they go through a web server. Source download URL is address of a
+# script that takes URL of a page as a parameter and serves the source code. The
+# parameter is just concatenated to the URL string.
+
+# Example:
+# scan.source.access.url = http://www.mysite.com/protected/getsource.php?url=
+
+
+# Output (whatever the browser or the crawler receives) of pages with these file
+# types will be cleaned before indexing by removing fragments defined by the
+# scan.ignore.bits parameter. Type in file types separated by space.
+
+prune.file.types = htm html php php3 php4 php5 asp aspx jsp do
+
+# Extracted (by document parsers) text content of pages of these file
+# types will be cleaned before indexing by removing fragments defined by the
+# scan.ignore.bits.after parameter. List file types separated by space.
+# Note that files of types listed in the prune.file.types parameter are processed
+# BEFORE parsing the document. This kind of processing is relatively easy to apply
+# to text based files, such as HTML and PHP files. The prune.file.types.after parameter
+# lists types of files that are to be pruned AFTER parsing them (extracting textual 
+# content from them).
+# To tune pruning, set temporarily log4j.logger.au.csiro.cass.arch.security.BasicPruner
+# to TRACE in conf/log4j.properties file to see what input the pruner gets.
+
+#prune.file.types.after = doc pdf
+
+# Output (whatever the browser or the crawler receives) of pages with these content
+# types will be cleaned before indexing by removing fragments defined by the
+# scan.ignore.bits parameter. Type in file types separated by space.
+
+prune.content.types = text/html | text/javascript
+
+# Extracted (by document parsers) text content of pages of these content
+# types will be cleaned before indexing by removing fragments defined by the
+# scan.ignore.bits.after parameter. List content types separated by space.
+# Note that files of types listed in the prune.content.types parameter are processed
+# BEFORE parsing the document. This kind of processing is relatively easy to apply
+# to text based files, such as HTML and PHP files. The prune.file.types.after parameter
+# lists types of files that are to be pruned AFTER parsing them (extracting textual 
+# content from them).
+# To tune pruning, set temporarily log4j.logger.au.csiro.cass.arch.security.BasicPruner
+# to TRACE in conf/log4j.properties file to see what input the pruner gets.
+
+#prune.content.types.after = application/pdf application/msword
+
+
+# Strings to use to find script fragments in pages. Type in start and end strings
+# separated by <b>pipe<b> character.
+
+scan.script.edges = <? | ?> 
+scan.script.edges = <script | script> 
+
+# Strings identifying text fragments to ignore. This can be
+# used, for example, to avoid indexing of common page fragments, such as headers
+# and footers. Type one pair per line, separate start and end strings with a pipe
+# character. Each pair must be enclosed in '[' or ,'{' at the start and ']' or '}'
+# at the end. '[' and ']' mean ignore the fragment, including the boundary string.
+# '{' and '}' mean ignore the fragment, not including the boundary string.
+
+# Examples:
+# scan.ignore.bits = [ <div class="header"> | <div class="content"> }
+# scan.ignore.bits = [ <div class="footer"> | </html> }
+
+# Strings identifying text fragments to prune AFTER PARSING. 
+
+# Examples:
+# scan.ignore.bits.after = [ Contents | page 65 ]
+# scan.ignore.bits.after = [ Contact | contact@our.com ]
+
+
+# Script fragments containing these strings will be ignored. This can be used,
+# for example, to avoid scanning and reporting of common scripts, such as those
+# used to generate headers and footers. Use with care as attackers may include one
+# of such fragments in their script to hide it. Separate strings with a pipe
+# character.
+ 
+# Example:
+# scan.ignore.scripts = <?php include("header.inc"); ?> | <?php include("footer.inc"); ?> 
+
+# The listed links will be ignored. This can be used, for example, to avoid
+# reporting of common scripts, such as those occurring in headers and footers.
+
+# Examples: 
+# scan.ignore.links = http://www.mysite.com/contactus.html
+# scan.ignore.links = http://www.mysite.com/home.html
+
+
+# Rise an alert of this level if found this string while scanning output or
+# source of the page, or both. Each alert entry consists of three fields separated
+# by a pipe character. The first field is the string to look for. The second
+# field is the level of alert to rise: SAFE, UNSURE, UNSAFE or THREAT. The third
+# field is what to scan: OUT - only output of the page, SRC - only source of the
+# page, BOTH - both of them. 
+
+# Examples:
+# scan.alert = mail( | UNSAFE | src
+# scan.alert = $_REQUEST | UNSURE | src
+# scan.alert = http://hostile.com | THREAT | both
+
+
+# Level of alerts to rise: SAFE, UNSURE, UNSAFE, THREAT. The SAFE level is most
+# detailed, THREAT alerts of only most serious problems found.
+# Found new and changed pages, links, forms and scripts are of UNSURE level. If
+# the alert level is set to UNSAFE or THREAT, they will be ignored even if their
+# reporting is enabled below.
+
+scan.alert.level= UNSURE
+
+
+# Report found new or changed pages, forms, scripts and links. Note that all
+# these notifications are of UNSURE level. If your alerts level is set to UNSAFE
+# or THREAT, change reports will not be sent.
+
+scan.report.new.pages = true 
+scan.report.new.forms = true 
+scan.report.new.scripts = true 
+scan.report.changed.pages = true 
+scan.report.changed.forms = true 
+scan.report.changed.scripts = true 
+scan.report.link.changes = true 
+
+
+# Script fragments of size smaller than this are ignored. Use with care.
+
+scan.min.script.size = -1
+
+
+# File type of index files that are automatically served if URL ends with "/",
+# for example, http://www.mysite.com/somepath/. This is used to make decisions
+# on whether to scan index files according to values of scan.file.types and
+# scan.src.file.types
+
+scan.index.file.type = html
+
+
+#===============================================================================
+#                                Notifications
+#===============================================================================
+
+# This set of parameters may override parameters in the global config file. If
+# they are present here, email messages related to this site are sent to address
+# defined here and their text is not included in the combined message sent to the
+# address configured in the global config file. To cause sending a separate email
+# for this site, define at least mail.recipient parameter here. The rest are
+# optional, as long as they are defined in the global config file.
+
+# Level of details in emeail messages: DEBUG, INFO, WARN, ERROR or OFF.
+# DEBUG level is most detailed, OFF switches email notifications OFF.
+# Please note that email notifications are not designed to provide detailed reports.
+# To get details, see log files. 
+
+mail.level = OFF
+
+# Mail protocol to use. Optional. The default value is smtp.
+
+mail.transport.protocol = smtp 
+
+# Mail server address. Has to be defined either here or in the global config file.
+
+mail.host = mail.mycompany.com
+
+# Mail user name, if mail server requires authentication.
+
+mail.user = itsme
+
+# Mail user password, if mail server requires authentication.
+
+mail.pass = mypassword
+
+# Email message subject to use. Optional. The default value is 
+# Arch indexing report
+
+mail.subject = My message from Arch
+
+# Adresses of recipients. This parameter is required to switch per-site email ON.
+# If it is not defined, email message body for this site is included in the
+# "global" message sent in accordance with the global config file parameters.
+# There can be multiple recipients separated by ';', ':' or ','.
+
+mail.recipient = address1@mycompany.com; address2@anothercompany.com
+

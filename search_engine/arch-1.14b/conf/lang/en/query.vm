@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+  <title>Arch Query Form</title>
+  <script type="text/javascript" src="../scripts/ajax.js"></script>
+  <script type="text/javascript" src="../scripts/modal-message.js"></script>
+  <script type="text/javascript" src="../scripts/arch.js"></script>
+  <script type="text/javascript">
+  var ajaxAddress = "ajax" ;
+  var queryPrompt = "Please give a name to saved query." ;
+  var archResources = "" ;
+  </script>
+  <link rel="stylesheet" type="text/css" href="../css/arch-${theme}.css" />
+  <link rel="alternate stylesheet" type="text/css" href="../css/arch-blue.css" title="blue" />
+  <link rel="alternate stylesheet" type="text/css" href="../css/arch-green.css" title="green" />
+  <link rel="alternate stylesheet" type="text/css" href="../css/arch-purple.css" title="purple" />
+  <link rel="stylesheet" type="text/css" href="../css/modal-message.css"/>
+  <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/> 
+
+</head>
+<body onload="initPage();">
+
+<div class="page">
+
+<center>
+<table width="700">
+
+ <tr valign="middle">
+   <td width="100"><a href="http://www.atnf.csiro.au/computing/software/arch/"><img src="../images/arch_logo.gif"></a></td>
+   <td><h2 align='center'>Arch Query Form</h2></td>
+   <td width="100" align='center'>
+     <div id="login" style="display:$styleLogin;float:right;" >
+      <button name='login' onClick='login();return false;'>Login</button> 
+     </div>
+     <div id="logout" style="display:$styleLogout;float:right;" >
+      <button name='login' onClick='logout();return false;'>Logout</button> 
+     </div>   
+   </td>
+ </tr>
+
+<tr><td colspan="3">
+<fieldset>
+  <legend onclick="togglePanel( 'standard' );">Simple Query</legend>
+  <div id="standardPanel"> 
+   <form name="search1" id="search1" action="search" method="get">
+    <table width="100%">
+     <tr>
+       <td align='right'><b>Query:</b></td>
+       <td><input size=80 type='text' value='' 
+         name='q' onkeydown="if ((event.which&&event.which==13)||(event.keyCode&&event.keyCode==13))
+                                       document.search1.submit() ; else return true ;" >
+       </td>
+     </tr>
+     <tr>
+       <td colspan=2 align="center" class="q">
+#if ( $selectSite )
+           <label for="ar_site">Site &nbsp;</label>$selectSite&nbsp;
+#end
+#if ( $selectArea )
+           <label for="ar_area">Area &nbsp;</label>$selectArea
+#end
+         <input type="submit" name="aa" value="Search" style="float:right">
+       </td>
+     </tr>
+     <tr>
+      <td colspan=2 align="center" class="q" style="padding-left:0.5cm">
+        This engine supports <a href="http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html">Lucene query syntax.</a>
+      </td>
+     </tr>
+
+    </table>
+
+    <input type="hidden" name="rows" value="$rows">
+    <input type="hidden" name="lang" value="$language">
+   </form>
+  </div>
+</fieldset>
+</td></tr>
+
+<tr><td colspan="3">
+<fieldset>
+  <legend onclick="togglePanel( 'advanced' );">Advanced Query</legend>
+  <div id="advancedPanel"> 
+
+   <form name="search2" id="search2" action="search" method="get">
+    <table width="100%">
+     <tr>
+      <td align="right" class="q">Find documents with <b>all</b> these words</td>
+      <td><input name="ar_fall" size=44 value=""></td>
+     </tr>
+     <tr>
+      <td align="right" class="q"><b>and</b> with these words in <b>content</b></td>
+      <td><input name="ar_fcontent" size=44 value=""></td>
+     </tr>
+     <tr>
+      <td align="right" class="q"><b>and</b> with these words in <b>title</b></td>
+      <td><input name="ar_ftitle" size=44 value=""></td>
+     </tr>
+     <tr>
+      <td align="right" class="q"><b>and</b> with these words in <b>URL</b></td>
+      <td><input name="ar_furl" size=44 value=""></td>
+     </tr>
+     <tr>
+      <td align="right" class="q"><b>and</b> with these words in <b>host</b></td>
+      <td><input name="ar_fhost" size=44 value=""></td>
+     </tr>
+     <tr>
+      <td align="right" class="q">but <b>without any</b> of these words</td>
+      <td><input name="ar_fnot" size=44 value=""></td>
+     </tr>
+     <tr>
+      <td colspan=2 align="center" class="q">
+#if ( $selectSite )
+        <label for="ar_site">Site &nbsp;</label> $selectSite &nbsp;
+#end
+#if ( $selectArea )
+        <label for="ar_area">Area &nbsp;</label> $selectArea
+#end
+      <input type="submit" name="aa" value="Search" style="float:right">
+     </td>
+    </tr>
+   </table>
+   <input type="hidden" name="rows" value="$rows">
+   <input type="hidden" name="lang" value="$language">
+  </form>
+ </div>
+</fieldset>
+</td></tr>
+
+<tr class="query"><td colspan="3">
+<fieldset>
+ <legend onclick="showOptions();">Options</legend>
+ <div id="optionsPanel" style="display: none;">
+ 
+ <TABLE border=0 width="100%">
+   <TR VALIGN="middle">
+      <TD ALIGN="center" class="q" colspan="4"><P><b>Please note: </b>Custom options and saved queries are stored in cookies. To do this, cookies must be enabled in your browser.<br></TD>
+   </TR>
+   <TR VALIGN="middle">
+      <TD ALIGN="RIGHT" class="q" width="21%">Visual theme</TD>
+      <TD width="11%"> 
+         <select name="theme" id="theme" onchange="onThemeChanged( this );"> 
+            <option value="blue" selected>Blue</option> 
+            <option value="green">Green</option> 
+            <option value="purple">Purple</option> 
+         </select>
+      </TD>                
+      <TD ALIGN="RIGHT" class="q" width="24%">Default site to search</TD>
+      <TD width="17%" > 
+          <input name="defaultSite" id="defaultSite" type="text" value="" size=10/>
+      </TD>
+   </TR>
+   <TR  VALIGN="middle">
+      <TD ALIGN="RIGHT" class="q" width="16%">Hits per page</TD>
+      <TD width="11%"> 
+            <select name="hits" id="hits"> 
+            <option value="10" selected>10</option> 
+            <option value="50">50</option> 
+            <option value="100">100</option> 
+            <option value="500">500</option> 
+            <option value="1000">1000</option> 
+         </select>
+      </TD>
+      <TD ALIGN="RIGHT" class="q">Saved queries per line</TD>
+      <TD> 
+         <select name="columns" id="columns"> 
+            <option value="1">1</option> 
+            <option value="2">2</option> 
+            <option value="3">3</option> 
+            <option value="4" selected>4</option> 
+            <option value="5">5</option> 
+            <option value="6">6</option> 
+            <option value="7">7</option> 
+            <option value="8">8</option> 
+            <option value="9">9</option> 
+         </select>
+      </TD>
+   </TR>
+   <TR  VALIGN="middle">
+      <TD ALIGN="center" colspan="6">
+       <table id="savedQueriesOptions"></table>
+      </TD>
+   </TR>
+   <TR  VALIGN="middle">
+      <TD ALIGN="center" colspan="6">
+       <button onclick="onOptionsOKClick()">OK</button>
+       <button onclick="onOptionsCancelClick()">Cancel</button>
+      </TD>
+   </TR>
+ </table>
+ </div> 
+</fieldset> 
+</td></tr>
+
+<tr><td colspan="3" id="savedQueriesPlace">
+</td></tr>
+<tr><td colspan="3" style="padding-left:0.3cm;">
+Powered by <a href="http://www.atnf.csiro.au/computing/software/arch/">CSIRO Arch</a>
+</td></tr> 
+ 
+</table>
+ 
+  <script type="text/javascript">
+    var messageObj = new DHTML_modalMessage() ;
+    messageObj.setShadowOffset( 7 ) ;    // Large shadow
+  </script>
+
+</center>
+
+</div>
+
+</body>
+
+</html>

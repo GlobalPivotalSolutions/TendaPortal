@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<ivy-module version="1.0">
+  <info organisation="au.csiro.cass" module="${ant.project.name}">
+    <description>
+        Arch plugin
+    </description>
+  </info>
+
+  <configurations>
+      <include file="${nutch.root}/ivy/ivy-configurations.xml"/>
+  </configurations>
+
+  <dependencies>
+  </dependencies>
+  
+</ivy-module>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-pruner"
+   name="Arch page pruner"
+   version="1.7"
+   provider-name="cass.csiro.au">
+   
+   <runtime>
+      	<library name="arch-pruner.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.security.Pruner"
+              name="Arch page pruner"
+              point="au.csiro.cass.arch.security.Pruner">
+      <implementation id="ArchBasicPruner"
+                      class="au.csiro.cass.arch.security.BasicPruner"/>
+   </extension>
+
+</plugin>
+

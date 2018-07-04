@@ -1,0 +1,312 @@
+<!-- ================================================================================================= -->
+<!--                                           SECURITY TAB                                            -->
+<!-- ================================================================================================= -->
+      <div data-dojo-type="dijit.layout.ContentPane" title="Security" class="archTab">
+<fieldset>
+  <legend>Security scanning switch</legend>
+         <table class="options">
+
+           <tr id="tr.of.scan.enabled">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel" width="150"></td>
+             <td class="paramText">
+               <input id="scan.enabled" dojoType="dijit.form.CheckBox" value="scan.enabled" checked><label for="scan.enabled">Security scanning enabled</label>
+             </td>                       
+          </tr>
+          <tr class="helpRow" id="help.for.scan.enabled" style="display:none"><td colspan=3>
+            Enable or disable Arch security scanning related features. Arch can monitor your site for potential threats, new and changed pages, scripts and links.
+            You can define clues to look for and Arch will notify you when it finds something. However, security scanning has a cost because extra
+            processing is involved. For better protection, it is desirable to scan not only output pages (such as those produced by PHP), but
+            source scripts as well. See more about this in Arch deployment manual. If you do not want to do security scanning or
+            not ready to configure scanning parameters, just disable security scanning for now.<br>
+            It is recommended that scanning is switched off during first crawl, else it will generate too many alerts, as every page and
+            link will be new to it.
+         </td></tr>
+       </table>
+</fieldset>
+
+<fieldset>
+  <legend>What to scan</legend>
+         <table class="options">
+
+           <tr id="tr.of.scan.file.types">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramText">
+                 <b>Scan output of pages with these file types</b><br>
+                 <textarea id="scan.file.types" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.scan.file.types" style="display:none"><td colspan=2>
+          Output (whatever the browser or the crawler receives) of pages with these file types will be scanned.
+          Type in file types by space or pipe character.
+         <br>Example: htm html php php3 php4 php5 asp aspx jsp do
+         </td></tr>
+
+         <tr id="tr.of.scan.src.file.types">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Scan sources of pages with these file types</b><br>
+                 <textarea id="scan.src.file.types" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+         </tr>
+          <tr class="helpRow" id="help.for.scan.src.file.types" style="display:none"><td colspan=2>
+          Source code of pages with these file types will be scanned. Note that a way to download this source code
+          must be provided. See the <i>Source download URL</i> parameter below.
+          Type in file types by space or pipe character.
+         <br>Example: php php3 php4 php5
+         </td></tr>
+
+         <tr id="tr.of.scan.content.types">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Scan output of pages with these content types</b><br>
+                 <textarea id="scan.content.types" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+         </tr>
+          <tr class="helpRow" id="help.for.scan.content.types" style="display:none"><td colspan=2>
+          Output (whatever the browser or the crawler receives) of pages with these content types will be scanned.
+          Type in content types by space or pipe character.
+         <br>Example: text/html text/javascript
+         </td></tr>
+
+         <tr id="tr.of.scan.src.content.types">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Scan sources of pages with these content types</b><br>
+                 <textarea id="scan.src.content.types" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+         </tr>
+          <tr class="helpRow" id="help.for.scan.src.content.types" style="display:none"><td colspan=2>
+          Source code of pages with these content types will be scanned. Note that a way to
+          download this source code must be provided. See the <i>Source download URL</i> parameter below. Type in
+          content types by space or pipe character.
+
+         <br>Example: text/html text/javascript
+         </td></tr>
+
+         <tr id="tr.of.scan.source.access.url">
+             <td class="paramLabel" colspan=2>Source download URL</td>
+             <td class="paramText">
+                <div id="scan.source.access.url" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                 
+                </div> 
+             </td>                       
+         </tr>
+         <tr class="helpRow" id="help.for.scan.index.file.type" style="display:none"><td colspan=3>
+                To scan sources of web pages, it must be possible to download them as they are before they go
+                through a web server. Source download URL is address of a script that takes URL of a page as
+                a parameter and serves the source code. The parameter is just concatenated to the URL string.<br>
+                Example: http://www.mysite.com/protected/getsource.php?url=
+         </td></tr>
+
+
+
+         <tr id="tr.of.scan.script.edges">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Script edges</b><br>
+                 <textarea id="scan.script.edges" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+         </tr>
+          <tr class="helpRow" id="help.for.scan.script.edges" style="display:none"><td colspan=2>
+          Strings to use to find boundaries of script fragments in pages. 
+          Type in start and end strings <b>separated by pipe character</b>, one pair per line.
+         <br>Example: &lt;script | script&gt;<br>&lt;? | ?&gt;
+         </td></tr>
+       </table>
+</fieldset>
+
+<fieldset>
+  <legend>What to clean</legend>
+         <table class="options">
+
+           <tr id="tr.of.prune.file.types">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramText">
+                 <b>Clean pages with these file types</b><br>
+                 <textarea id="prune.file.types" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.prune.file.types" style="display:none"><td colspan=2>
+          Output (whatever the browser or the crawler receives) of pages with these file types will be cleaned before indexing by removing       
+          fragments defined below. Type in file types separated by space or pipe character.
+         <br>Example: htm html php php3 php4 php5 asp aspx jsp do
+         </td></tr>
+
+         <tr id="tr.of.prune.content.types">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Clean pages with these content types</b><br>
+                 <textarea id="prune.content.types" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.prune.content.types" style="display:none"><td colspan=2>
+          Output (whatever the browser or the crawler receives) of pages with these content types will be cleaned before indexing by removing       
+          fragments defined below. Type in content types separated by space or pipe character.
+         <br>Example: text/html | text/javascript
+         </td></tr>
+
+         <tr id="tr.of.scan.ignore.bits">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Ignore fragments with these boundaries</b><br>
+                 <textarea id="scan.ignore.bits" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.scan.ignore.bits" style="display:none"><td colspan=2>
+          Text fragments between starting and ending strings will be ignored. This can be used, for example, to avoid scanning
+          of common page fragments, such as headers and footers. Type one pair per line, separate start and end strings with a pipe character.
+          Enclose the pairs of stings in combinations of '[', ']', '{' and '}'. '[' and ']' mean ignore the fragment,
+          including the boundary string. '{' and '}' mean ignore the fragment, not including the boundary string.
+         <br>Example: [ &lt;div class=&quot;header&quot;&gt; | &lt;div class=&quot;content&quot;&gt; }
+         </td></tr>
+
+         <tr id="tr.of.scan.ignore.scripts">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Ignore scripts that contain these strings</b><br>
+                 <textarea id="scan.ignore.scripts" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.scan.ignore.scripts" style="display:none"><td colspan=2>
+          Script fragments containing these strings will be ignored. This can be used, for example, to avoid scanning and reporting
+          of common scripts, such as those used to generate headers and footers. Use with care as attackers may include one of such
+          fragments in their script to hide it. Separate strings with a pipe character.
+         <br>Example: &lt;?php include(&quot;header.inc&quot;); ?&gt; | &lt;?php include(&quot;footer.inc&quot;); ?&gt; 
+         </td></tr>
+
+         <tr id="tr.of.scan.ignore.links">
+             <td class="paramLabel">&nbsp</td>
+             <td class="paramText">
+                 <b>Ignore these links</b><br>
+                 <textarea id="scan.ignore.links" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.scan.ignore.links" style="display:none"><td colspan=2>
+          The listed links will be ignored. This can be used, for example, to avoid reporting
+          of common links, such as those occurring in menus, headers and footers. Type one link per line.
+         <br>Example: http://www.mysite.com/contactus.html
+         </td></tr>
+       </table>
+</fieldset>
+
+<fieldset>
+  <legend>What to look for</legend>
+         <table class="options">
+
+           <tr id="tr.of.scan.alert">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramText">
+                 <b>Alerts</b><br>
+                 <textarea id="scan.alert" dojoType="dijit.form.Textarea" style="width:100%">
+                 </textarea>
+            </td>
+          </tr>
+          <tr class="helpRow" id="help.for.scan.alert" style="display:none"><td colspan=2>
+          Rise an alert of this level if found this string while scanning output or source of the page, or both. Each alert
+          entry consists of three fields separated by a pipe character. The first field is the string to look for. The second
+          field is the level of alert to rise: SAFE, UNSURE, UNSAFE or THREAT. The third field is what to scan: OUT - only
+          output of the page, SRC - only source of the page, BOTH - both of them. 
+         <br>Example: mail( | UNSAFE | src <br> $_REQUEST | UNSURE | src <br> http://hostile.com | THREAT | both
+         </td></tr>
+       </table>
+</fieldset>
+
+<fieldset>
+  <legend>Scanning and reporting parameters</legend>
+      <table class="options">
+           <tr id="tr.of.scan.alert.level">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Alerts level</td>
+             <td class="paramText">
+                <select name="scan.alert.level" id="scan.alert.level" dojoType="dijit.form.Select">
+                   <option value="SAFE">SAFE</option>
+                   <option value="UNSURE" selected="selected">UNSURE</option>
+                   <option value="UNSAFE">UNSAFE</option>
+                   <option value="THREAT">THREAT</option>
+                </select>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.scan.alert.level" style="display:none"><td colspan=3>
+               <P>   
+                Level of alerts to rise: SAFE, UNSURE, UNSAFE, THREAT.
+                The SAFE level is most detailed, THREAT alerts of only most serious problems found.
+                <br><br>
+                Found new and changed pages, links, forms and scripts are of UNSURE level. If the alert
+                level is set to UNSAFE or THREAT, they will be ignored even if their reporting is enabled
+                below.
+               </p>
+           </td></tr>
+
+        <tr id="tr.of.reporting">
+             <td class="paramLabel" colspan=2>Report</td>
+             <td class="paramText">
+               <table><tr>
+                 <td><input id="scan.report.new.pages" dojoType="dijit.form.CheckBox" value="new.pages" checked><label for="scan.report.new.pages">New pages</label></td>
+                 <td><input id="scan.report.new.forms" dojoType="dijit.form.CheckBox" value="new.forms" checked><label for="scan.report.new.forms">New forms</label></td>
+                 <td><input id="scan.report.new.scripts" dojoType="dijit.form.CheckBox" value="new.scripts" checked><label for="scan.report.new.scripts">New scripts</label><br></td>
+                </tr><tr>
+                 <td><input id="scan.report.changed.pages" dojoType="dijit.form.CheckBox" value="changed.pages" checked><label for="scan.report.changed.pages">Changed pages</label></td>
+                 <td><input id="scan.report.changed.forms" dojoType="dijit.form.CheckBox" value="changed.forms" checked><label for="scan.report.changed.forms">Changed forms</label></td>
+                 <td><input id="scan.report.changed.scripts" dojoType="dijit.form.CheckBox" value="changed.scripts" checked><label for="scan.report.changed.scripts">Changed scripts</label><br></td>
+                </tr><tr>
+                 <td colspan=3><input id="scan.report.link.changes" dojoType="dijit.form.CheckBox" value="link.changes" checked><label for="scan.report.link.changes">Link changes</label><br></td>
+                </tr>
+               </table>
+             </td>                       
+        </tr>
+        <tr class="helpRow" id="help.for.reporting" style="display:none"><td colspan=3>
+            To switch ON reporting of particular changes in indexed web sites, tick the relevant checkboxes. Note that all these notifications are of UNSURE level.
+            If your alerts level is set to UNSAFE or THREAT, change reports will not be sent.
+        </td></tr>
+
+        <tr id="tr.of.scan.min.script.size">
+             <td class="paramLabel" colspan=2>Min script size</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="-1" smallDelta="5" largeDelta="100"
+                       constraints="{min:-1,places:0}" id="scan.min.script.size" name="scan.min.script.size" />
+             </td>                       
+         </tr>
+         <tr class="helpRow" id="help.for.scan.min.script.size" style="display:none"><td colspan=3>
+                Script fragments of size smaller than this are ignored. Use with care.
+         </td></tr>
+
+         <tr id="tr.of.scan.index.file.type">
+             <td class="paramLabel" colspan=2>Index file type</td>
+             <td class="paramText">
+                <div id="scan.index.file.type" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                 html
+                </div> 
+             </td>                       
+         </tr>
+         <tr class="helpRow" id="help.for.scan.index.file.type" style="display:none"><td colspan=3>
+                File type of index files that are automatically served if URL ends with &quot;/&quot;,
+                for example, http://www.mysite.com/somepath/
+         </td></tr>
+
+       </table>
+</fieldset>
+
+      </div>

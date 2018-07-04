@@ -1,0 +1,103 @@
+CSIRO Arch
+Copyright (c) 2018 CSIRO Astronomy and Space Science, Arkadi Kosmynin 
+
+This product includes software developed by CSIRO
+(http://www.csiro.au/).
+
+This product includes software developed by the following copyright owners:
+
+Arch includes Apache Nutch:
+Copyright (c) The Apache Software Foundation
+For a list of software included in Nutch and its copyright owners, please see NUTCH-NOTICE.txt
+
+Arch includes Apache Solr
+Copyright (c) The Apache Software Foundation
+For a list of software included in Solr and its copyright owners, please see SOLR-NOTICE.txt
+
+Arch includes Jetty Web Container
+Copyright (c) Mort Bay Consulting Pty Ltd
+For a list of software included in Jetty and its copyright owners, please see JETTY-NOTICE.html
+
+Arch includes Apache Derby
+Copyright (c) The Apache Software Foundation
+
+Arch includes Apache Xalan XSLT processor:
+Copyright (c) The Apache Software Foundation
+
+Arch includes Apache Xalan serializer:
+Copyright (c) The Apache Software Foundation
+
+Arch includes Sun Microsystem's JDBC Driver for MySQL:
+Copyright (c) MySQL AB, 2008 Sun Microsystems
+
+Arch includes parts of DHTML Suite for Applications:
+Copyright (c)  DTHMLGoodies.com, Alf Magne Kalleland
+
+Arch includes Smarty template engine:
+Copyright (c) New Digital Group, Inc
+
+Arch includes JSON.simple - A simple Java toolkit for JSON
+by Yidong Fang and Chris Nokleberg
+http://code.google.com/p/json-simple/
+
+Arch includes Apache Commons Collections
+Copyright (c) The Apache Software Foundation
+
+Arch includes Apache Commons Net
+Copyright (c) The Apache Software Foundation
+
+Arch includes Apache Commons VFS
+Copyright (c) The Apache Software Foundation
+
+Arch includes Java Secure Channel (JSch)
+Copyright (c) Atsuhiko Yamanaka, JCraft,Inc. 
+
+Arch includes JZlib
+Copyright (c) Atsuhiko Yamanaka, JCraft,Inc. 
+
+Arch includes ASM
+Copyright (c) INRIA, France Telecom
+
+Arch includes Crawler Commons
+Copyright (c)
+http://code.google.com/p/crawler-commons/
+
+Arch includes H2 RDBMS
+Copyright (c) H2 Group
+
+Arch includes Apache HttpComponents
+Copyright (c) The Apache Software Foundation
+
+Arch includes Jackson Java JSON-processor
+Copyright (c) FasterXML, LLC
+
+Arch includes Java Architecture for XML Binding (JAXB)
+Copyright (c) Oracle and/or its affiliates.
+
+Arch includes RESTful Web Services in Java (Jersey)
+Copyright (c) Oracle and/or its affiliates.
+
+Arch includes Jettison
+Copyright (c) Envoi Solutions LLC
+
+Arch includes Apache PDFBox - A Java PDF Library
+Copyright (c) The Apache Software Foundation
+
+Arch includes Bouncy Castle Crypto package
+Copyright (c) The Legion of the Bouncy Castle Inc. (http://www.bouncycastle.org) 
+
+Arch includes Guava: Google Core Libraries for Java 1.6+
+Copyright (c) Google
+
+Arch includes Google Crawler-Commons
+Copyright (c) Google
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,233 @@
+<!-- ================================================================================================= -->
+<!--                                            GENERAL TAB                                            -->
+<!-- ================================================================================================= -->
+
+<div data-dojo-type="dijit.layout.ContentPane" title="General" id="generalTab" class="archTab">      
+<fieldset>
+  <legend>Locations</legend>
+         <table class="options">
+           <tr id="tr.of.solr.url">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Solr url</td>
+             <td class="paramText">
+                <div id="solr.url" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  http://localhost:8080/arch
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.solr.url" style="display:none"><td colspan=3>
+                Address of Solr server that is installed with Arch
+           </td></tr>
+           <tr id="tr.of.url">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Base URL</td>
+             <td class="paramText">
+                <div id="url" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  http://www.mysite.com/
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.url" style="display:none"><td colspan=3>
+                Base URL of this site
+           </td></tr>
+           <tr id="tr.of.temp.dir">
+             <td class="paramLabel" colspan=2>Working directory</td>
+             <td class="paramText">
+                <div id="temp.dir" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  /opt/arch/temp
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.temp.dir" style="display:none"><td colspan=3>
+                The directory where crawling data is kept temporarily before sending it to
+                Solr. Contents are deleted after successful crawling. Make sure that this
+                directory has plenty of free space for temporary use. Nutch (more precisely, Hadoop), uses surprisingly large
+                amounts of disk space.
+           </td></tr>
+        </table>
+
+</fieldset>
+<fieldset>
+  <legend>Database</legend>
+         <table class="options">
+           <tr id="tr.of.database">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Database</td>
+             <td class="paramText">
+                <div id="database" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  MySQL
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.database" style="display:none"><td colspan=3>
+                Database plugin module to use. This parameter must match &quot;database&quot; attribute
+                (defined in plugin.xml file) of a database interface plugin. A MySQL  and
+                Apache Derby based plugins are included with Arch, but any other relational
+                database plugin can be used if available. For a reference implementation,
+                please see the MySQL plugin. Apache Derby can be used in embedded mode, with
+                minimal configuration, if you don't need the automatic site map function,
+                which is not available in this mode. The client-server Derby mode has not been tested.
+           </td></tr>
+           <tr id="tr.of.target.db">
+             <td class="paramLabel" colspan=2>Database JDBC URL</td>
+             <td class="paramText">
+                <div id="target.db" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  jdbc:mysql://localhost/arch?user=&lt;user name&gt;&amp;password=&lt;password&gt;
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.target.db" style="display:none"><td colspan=3>
+               Address of a database where to keep data. Note that DB related parameters
+               can be re-defined for each site. Sites can store their data in different
+               databases. To use Apche Derby in embedded mode, this parameter can be dropped.
+           </td></tr>
+           <tr id="tr.of.db.driver">
+             <td class="paramLabel" colspan=2>Database JDBC driver class</td>
+             <td class="paramText">
+                <div id="db.driver" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  com.mysql.jdbc.Driver
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.db.driver" style="display:none"><td colspan=3>
+                Database JDBC driver to use. After you put in this parameter, Arch will attempt to test your DB connection.
+                If the test in not successful, all related fields will be marked to check. You can go back a few steps and re-check them.
+           </td></tr>
+        </table>
+</fieldset>
+<fieldset>
+  <legend>Email notifications</legend>
+         <table class="options">
+           <tr id="tr.of.mail.level">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Notification level</td>
+             <td class="paramText">
+                <select name="mail.level" id="mail.level" dojoType="dijit.form.Select">
+                   <option value="OFF">Off</option>
+                   <option value="INFO" selected="selected">INFO</option>
+                   <option value="WARN">WARN</option>
+                   <option value="ERROR">ERROR</option>
+                   <option value="DEBUG">DEBUG</option>
+                </select>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.mail.level" style="display:none"><td colspan=3>
+               <P> This set of parameters controls email notofications. They can be redefined in 
+                sites config files to send separate email messages for each site that requires it.
+               </p><P>   
+                Level of details in mail messages: DEBUG, INFO, WARN, ERROR, OFF.
+                The DEBUG level is most detailed, OFF switches email notifications off.
+                Please note that email notifications are not designed to provide detailed reports.
+                To get details, see log files.<br><br>
+                Unless this level is set to OFF, you will have to provide email setup parameters and
+                the wizard will not proceed until Arch can send a test email using these parameters. 
+               </p>
+           </td></tr>
+           <tr id="tr.of.mail.transport.protocol">
+             <td class="paramLabel" colspan=2>Mail protocol</td>
+             <td class="paramText">
+                <div id="mail.transport.protocol" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  smtp
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.mail.transport.protocol" style="display:none"><td colspan=3>
+                Mail protocol to use. Optional. The default value is smtp.
+           </td></tr>
+           <tr id="tr.of.mail.host">
+             <td class="paramLabel" colspan=2>Mail server</td>
+             <td class="paramText">
+                <div id="mail.host" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  mail.mycompany.com
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.mail.host" style="display:none"><td colspan=3>
+                Mail server address.
+           </td></tr>
+           <tr id="tr.of.mail.user">
+             <td class="paramLabel" colspan=2>Mail user name</td>
+             <td class="paramText">
+                <div id="mail.user" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  itsme
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.mail.user" style="display:none"><td colspan=3>
+                Mail user name, if mail server requires authentication.
+           </td></tr>
+           <tr id="tr.of.mail.pass">
+             <td class="paramLabel" colspan=2>Mail user password</td>
+             <td class="paramText">
+                <div id="mail.pass" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  mypassword
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.mail.pass" style="display:none"><td colspan=3>
+                Mail user password, if mail server requires authentication.
+           </td></tr>
+           <tr id="tr.of.mail.subject">
+             <td class="paramLabel" colspan=2>Email subject line</td>
+             <td class="paramText">
+                <div id="mail.subject" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  Arch indexing report
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.mail.subject" style="display:none"><td colspan=3>
+                Email message subject to use. The default value is &quot;Arch indexing report&quot;.
+           </td></tr>
+           <tr id="tr.of.mail.recipient">
+             <td class="paramLabel" colspan=2>Addresses of recipients</td>
+             <td class="paramText">
+                <div id="mail.recipient" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  address1@mycompany.com; address2@anothercompany.com
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.mail.recipient" style="display:none"><td colspan=3>
+                Adresses of recipients. If it is not defined, email messages are not sent.
+                The &quot;global&quot; message sent in accordance with the global config file parameters.
+                There can be multiple recipients separated by &#39;;&#39;, &#39;:&#39; or &#39;,&#39;.
+<br><br>
+                NOTE: A test email is sent automatically after you set up this group of parameters. Re-check the parameters
+                if you do not receive it.
+           </td></tr>
+         </table>
+</fieldset>
+<fieldset>
+  <legend>Faceted search</legend>
+     <table class="options">
+        <tr id="tr.of.facets">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Facets</td>
+             <td class="paramText">
+               <input id="facet.sites" dojoType="dijit.form.CheckBox" value="sites" checked><label for="facet.sites">Sites</label>
+               <input id="facet.areas" dojoType="dijit.form.CheckBox" value="areas" checked><label for="facet.areas">Areas</label>
+               <input id="facet.formats" dojoType="dijit.form.CheckBox" value="formats" checked><label for="facet.formats">Formats</label>
+             </td>                       
+        </tr>
+        <tr class="helpRow" id="help.for.facets" style="display:none"><td colspan=3>
+            To switch ON faceted search, just set at least one of the parameters below to true.
+            Faceting parameters set for sites override root configuration if parameter "domain"
+            is used in the request. Another method to  override faceting settings is to add
+            facet=true and other Solr faceting parameters to the request. If Arch finds a "facet"
+            field in request, it ignores configuration parameters. For more information on faceted
+            search, see Arch Deployment Manual.
+        </td></tr>
+     </table>
+</fieldset>
+
+#parse ( "controlDialogs.vm" )
+</div>

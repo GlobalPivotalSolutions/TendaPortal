@@ -1,0 +1,30 @@
+#set ( $pg = $pages.replaceFirst( "NNNNN", "Next" ) )
+
+#if ( $total == 0 )
+
+Sorry, your query did not match any results.
+
+#elseif ( $total == -1 )
+
+Sorry, your search caused an error, please report this to the administrator.
+
+#else
+
+  <table style="border-spacing:0;border-collapse:collapse;width:100%;"> 
+    <tr class="pages"><td>Results $start - $end of $total &nbsp;&nbsp; Pages: $pg</td></tr>
+
+#foreach( $item in $items )
+
+    <tr class="restitle"><td><a class="restitle" href="$item.link">$item.title</a></td></tr> 
+    <tr class="resdesc"><td>$item.description</td></tr>
+    <tr class="reslink"><td><a class="reslink" href="$item.link">$esc.html($item.link)</a></td></tr>
+#end
+
+    <tr class="pages"><td>Results $start - $end of $total   &nbsp;&nbsp; Pages: $pg</td></tr>
+    <tr><td> <!-- Note: It is against Arch license conditions to remove this link -->
+      <span style="padding-left:0.3cm;">Powered by <a href="http://www.atnf.csiro.au/computing/software/arch/">CSIRO Arch</a></span>
+      </td>
+     </tr> 
+
+</table>
+#end

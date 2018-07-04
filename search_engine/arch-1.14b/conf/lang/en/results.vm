@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+#set($searcher=$request.searcher)
+#set($params=$request.params)
+#macro(fqs $p)#foreach($fq in $p)#if($velocityCount>1)&#{end}fq=$esc.url($fq)#end#end
+<html lang="en">
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+
+  <title>Arch Search Results</title>
+  <script type="text/javascript" src="../scripts/ajax.js"></script>
+  <script type="text/javascript" src="../scripts/arch.js"></script>
+  <script type="text/javascript">
+  var ajaxAddress = "ajax.php" ;
+  var query_prompt = "Please enter a name for saved query." ;
+  var archAddress = "" ;
+  function keyPressed( event, form ) 
+  {
+    if ((event.which&&event.which==13)||(event.keyCode&&event.keyCode==13))
+                               form.submit(); else return true;
+  }
+  </script>
+  <link rel="stylesheet" type="text/css" href="../css/arch-${theme}.css" />
+  <link rel="alternate stylesheet" type="text/css" href="../css/arch-blue.css" title="blue" />
+  <link rel="alternate stylesheet" type="text/css" href="../css/arch-green.css" title="green" />
+  <link rel="alternate stylesheet" type="text/css" href="../css/arch-purple.css" title="purple" />
+  <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/> 
+
+</head>
+<BODY onload="initPage();">
+<div class="page">
+<div class="content">
+
+<fieldset>
+    <legend class="results">Search results</legend>
+<div style="padding-top: 0.1cm;padding-left:0.5cm;">
+ <table><tr valign="top"><td width="430">
+   <form name="qform" id="qform" action="">
+     <b><label for="q">Query:</lablel></b>
+              &nbsp;<input size=45 type='text' value="$!esc.html($params.get('q'))" 
+          name='q' id='q' onkeydown="return keyPressed(event, document.qform);" >
+  
+       <input type="submit" name="aa" value="Search">
+       <input type="hidden" name="lang" value="$language">
+   </form>
+  </td>
+  <td>
+  <button name="saveQuery" onClick="saveQuery();return false;">Save query</button>
+  <button name="newQuery" onClick="navigate( 'search' );return false;">New query</button>
+  </td></tr>
+ </table>
+</div>
+
+<div>
+#if($response.response.spellcheck.suggestions and $response.response.spellcheck.suggestions.size() > 0)
+#set ( $col = $response.response.spellcheck.suggestions.collation )
+  Did you mean <a href="?q=$esc.url($col)#if($list.size($request.params.getParams('fq')) > 0)&#fqs($request.params.getParams('fq'))#end">$col</a>?
+#end
+</div>
+
+<div id="facetsAndResults">
+
+#set ( $ind = 1 )
+
+<div id="results">
+#parse( "resultsBody.vm" )
+</div> <!-- results-->
+
+#set ( $aaa = $total + 1 )
+
+#if ( $allfacets ) ## If there are any facets at all
+<div id="facets">
+   <p><strong>Refine your results:</strong></p>
+
+## Sites, areas illustrate automatically building facets based on ordered collections
+
+#set ( $sites = $facets.get( "ar_site" ) )
+#if ( $sites )
+  <div id="sites">
+  <h3>Sites</h3>
+#foreach( $site in $sites.getConstraints() )
+#set ( $aaa = $aaa + 1 )
+   <div class="facetDiv">
+          <input id="box$aaa" type="checkbox" class="facet" tabindex="$aaa">
+          <label for="box$aaa" class="facet"> $site.getValue() ($site.getCount()) </label>
+          <input type="hidden" value="ar_site:$site.getValue()">
+   </div>
+#end
+  </div> <!-- sites -->
+#end <!-- sites -->
+
+#set ( $areas = $facets.get( "ar_area" ) ) 
+#if ( $areas )
+  <div>
+  <h3>Areas</h3>
+#foreach( $area in $areas.getConstraints() )
+#set ( $aaa = $aaa + 1 )
+   <div class="facetDiv">
+          <input id="box$aaa" type="checkbox" class="facet" tabindex="$aaa">
+          <label for="box$aaa" class="facet"> $area.getValue() ($area.getCount()) </label>
+          <input type="hidden" value="ar_area:$area.getValue()">
+   </div>
+#end
+  </div> <!-- areas -->
+#end <!-- areas -->
+
+## Here is an example of how to do the same for queries of arbitrary type using the global map.
+## This includes range queries. Using this method, you can provide custom labels.
+## The disadvantage is that you have to code each entry instead of iterating as above.
+## Macros help with this.
+
+#macro( mfacet $label $q )
+#if ( $allfacets.get( $q ) )
+#set ( $fq = $allfacets.get( $q ) )
+#set ( $aaa = $aaa + 1 )
+   <div class="facetDiv">
+          <input id="box$aaa" type="checkbox" class="facet" tabindex="$aaa">
+          <label for="box$aaa" class="facet"> $label ($fq.getCount()) </label>
+          <input type="hidden" value="$fq.getValue()">
+   </div>
+#end ## if
+
+#end ## macro
+
+  <div id="format">
+  <h3>Format</h3>
+     #mfacet( "HTML" "type:HTML" )
+     #mfacet( "PDF" "type:PDF" )
+     #mfacet( "Plain text" "type:Text" )
+     #mfacet( "Document (Office, ps, etc.)" "type:Document" )
+     #mfacet( "Presentation" "type:Presentation" )
+     #mfacet( "Spreadsheet" "type:Spreadsheet" )
+     #mfacet( "XML" "type:XML" )
+     #mfacet( "Source code" "type:Code" )
+     #mfacet( "Compressed (archive)" "type:Compressed" )
+     #mfacet( "Audio" "type:Audio" )
+     #mfacet( "Video" "type:Video" )
+     #mfacet( "Other" "type:Other" )
+  </div>
+
+
+</div> <!-- facets -->
+#end
+
+</div> <!-- facetsAndResults-->
+
+</fieldset>
+</div> <!-- results -->
+</div> <!-- page -->
+
+</body>
+</html>

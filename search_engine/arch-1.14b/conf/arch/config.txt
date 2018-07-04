@@ -1,0 +1,569 @@
+#===============================================================================
+#                                   General
+#===============================================================================
+
+# The directory where crawling data is kept temporarily before sending it to
+# Solr. Contents are deleted after successful crawling. Make sure that this
+# directory has plenty of free space for temporary use. If this paramter is
+# not defined, it is set to $ARCH_HOME/temp
+ 
+#temp.dir = /opt/arch/temp
+
+# Address of Solr server that will be installed with Arch
+
+solr.url = http://localhost:8993/solr/arch
+
+#===============================================================================
+#                                   Crawling
+#===============================================================================
+
+
+# Parallel indexing. If off, areas are crawled sequentially, one at a time. The
+# sequential mode is recommended for troubleshooting a new installation or after
+# a new site has been added. In this mode, if indexing fails, you can fix the
+# problem and restart indexing. It will skip areas that have been processed
+# successfully in the previous run. The parallel mode may significantly decrease
+# the time of indexing. Note that bookmarks areas will be processed
+# sequentially even if parallel processing is switched on.
+
+parallel.indexing = on
+
+
+# Default crawling depth. Defines how many crawling iterations to do by default
+# when indexing an area. Each area can overwrite this parameter, if indexed
+# sequentially. After deploying Arch, it is recommended to do a trial crawl with
+# a shallow depth, e.g. 2. If everything works, run the bin/clean script, set the
+# depth to a desired value and do a production crawl.
+
+# depth = 50
+
+
+# Default crawling depth for links found in log files. This parameter can be 
+# overwritten in loglinks areas configurations if sequential crawling is done
+# After indexing all areas of a site, links that are found in the
+# site logs, but have not been crawled yet, are used as starting points for another
+# round of crawling. It is not recommended that this parameter is set to higher than
+# 1 because in this case too many URLs that have already been crawled in previous stages
+# will be re-crawled and create duplicated entries in the index. If your site has too
+# many isolated areas which are discovered only via log links, the parallel crawling
+# mode is the recommended option. In parallel crawling, all pre-configured crawling
+# roots together with all links found in logs are used as starting points of crawling
+# with no risk of creating many duplicates because they are crawled together and Nutch
+# is making sure that no link is fetched twice.
+
+depth.loglinks = 1
+
+
+# Default max number of urls to fetch on each iteration. This is passed to Nutch
+# as the topN parameter.
+# Note: if defined, then the total size of an area index is limited to the depth 
+# multiplied by max.urls
+
+#max.urls = 10000
+
+
+# Number of concurrent threads to use for crawling
+
+#threads = 10 
+
+
+# Switches on and off removing duplicate entries from the index. They can result,
+# for example, from indexing URLs aliases. 
+
+remove.duplicates = on
+
+
+# Switches on and off watch mode. See Arch deployment manual for information on
+# watch mode.
+
+watch.mode = off
+
+#===============================================================================
+#                                Database access
+#===============================================================================
+
+# Database plugin module to use. This parameter must match “database” attribute
+# (defined in plugin.xml file) of a database interface plugin. MySQL, H2  and
+# Apache Derby based plugins are included with Arch, but any other relational
+# database plugin can be used if available. For a reference implementation,
+# please see the MySQL plugin. Apache Derby and H2 can be used in embedded mode, 
+# with minimal configuration, if you don't need the automatic site map function
+# which is not available in this mode. The client-server H2 and Derby mode has 
+# not been tested.
+
+# To use MySQL:
+# database = MySQL
+
+# To use H2:
+database = H2
+
+# To use Apche Derby:
+# database = Derby
+
+# Address of a database where to keep data. Note that DB related parameters
+# can be re-defined for each site. Sites can store their data in different
+# databases.
+
+# For MySQL:
+# target.db = jdbc:mysql://localhost/arch?user=<user name>&password=<password>
+
+# For embedded Derby:
+# target.db = jdbc:derby:embedded;create=true;user=arch;password=derbypass 
+
+# For embedded H2:
+target.db = jdbc:h2:embedded;MODE=MySQL;CACHE_SIZE=524288 
+
+# MySQL DB driver to use 
+# db.driver = com.mysql.jdbc.Driver
+
+# For embedded Derby: 
+# db.driver = org.apache.derby.jdbc.EmbeddedDriver
+
+# For H2: 
+db.driver = org.h2.Driver
+
+
+#===============================================================================
+#                                Faceted search 
+#===============================================================================
+
+# To switch ON faceted search, just set at least one of the parameters below
+# to true. Faceting parameters set for sites override root configuration if
+# parameter "domain" is used in the request. Another method to  override faceting
+# settings is to add facet=true and other Solr faceting parameters to the request.
+# If Arch finds a "facet" field in request, it ignores configuration parameters.
+# Set facet.sites and facet.areas to true if have more than one site and area.
+
+facet.sites = true 
+facet.areas = false 
+facet.formats = true 
+
+
+#===============================================================================
+#                                Log processing
+#===============================================================================
+
+# Log format name. This parameter must match “format” attribute (defined in
+# plugin.xml file) of a log parser plugin that is able to process logs of this
+# type. The default arch log parser works with logs in combined format. 
+
+log.format = combined
+
+
+# The log length to process, days. The latest log of this length will be taken
+# if available. E.g. if we have logs for the last 10 years, but this parameter
+# is 365 days, only the latest 365 days are used to compute document scores.
+# NOTE: for an active site, logs for only a few days, if not hours, will be
+# sufficient. 
+
+log.length = 365
+
+
+# The number of latest IP addresses to remember for a URL. This is needed
+# to catch and filter repeated accesses from same source. 
+
+history.size = 10
+
+
+# Max counted accesses to a single page per day. The rest are ignored.  
+
+max.hits.day = 5000
+
+
+# Max hits counted per IP per URL per day. A filter to block impact on
+# document scores caused by repeated accesses from the same IP. Should
+# be used with care as there may be multiple users behind one IP address.
+
+max.hits.ip.day = 5
+
+# Max document weight value to use for final weight normalisation in the DB.
+# All document weights are normalised to take values between 1 and max.score.
+# Later Arch scoring filter uses these weights to boost indexed documents.
+
+max.score = 5 
+
+
+# Max size of URLs cache. This cache is used when counting document accesses.
+# A bigger cache speeds up access counting, but requires more memory.
+
+max.url.cache = 100000
+
+
+# File names of index pages that will be served by the web server if there is
+# no file name in the URL (e.g. http://www.mysite.com/) 
+# deprecated 
+#index.file.names = index.html index.htm home.html home.htm index.php home.php
+
+# Delete log files after processing. Switching this on is convenient for setting
+# up automatic log processing. All you have to do is keep copying the latest log
+# files to the location where Arch expects them. Arch will find them, process and
+# delete.
+
+delete.logs=false
+
+#===============================================================================
+#                            IP filtering (for log processing)
+#===============================================================================
+
+# Hits/IP/URL/day beyond which the IP is placed on the list to ignore.
+# Should be used carefuly because some pages, e.g. home pages may be
+# requested often in normal use
+
+max.hits.norm = 1000
+
+# This interval is used when identifying IP addresses (of crawlers) to ignore.
+# If more hits than a certain threshold has come from an IP address in a time
+# interval shorter than capture.interval (in seconds), this IP address is
+# considered belonging to a crawler and put on a list to ignore. 
+
+capture.interval = 300
+
+
+# If IP address generates more than this number of hits per the interval, it is
+# considered a search engine. In this example, IP address is blocked if there
+# are more than 30 accesses to text documents in a 5 minutes interval.
+
+hits.threshold = 30
+
+
+# Attempt to identify and ignore search engines and abuse based on IP stats.
+# All IP based filtering can be turned off by setting this parameter to off.
+# This is not fatal, because robots accesses can still be filtered out based
+# on the client type, if this information is in the logs and robots do not
+# masquerade as browsers. 
+
+ip.filter = on
+
+
+# Max size of IP address cache. This cache is used when computing a list of
+# ignored IP addresses with aim to count only accesses generated by human
+# readers and exclude accesses generated by search engine crawlers. A bigger
+# cache speeds up ignored IPs list generation, but requires more memory.
+
+max.ip.cache = 100000  
+
+
+# Ignore log records where file names have these extensions.
+
+ignore.in.logs = .jpg .gif .png .css .js
+
+# Too long URLs extracted from logs are often a sign of hacker activity and should 
+# be ignored together with IP addresses that generated them. Use this parameter to
+# ignore URLs longer than its value. Set to -1 to not limit the length. 
+
+max.url.length = 300
+
+
+#===============================================================================
+#                                   Access control
+#===============================================================================
+
+# These prameters are used by the reference authenticator included with Arch.
+# You can replace it with your own module and use different configuration
+# method(s).
+
+# Security switch. It is recommended to keep security disabled until you get
+# your search working as expected. Else it may get in the way and it will be
+# harder to tell what is causing problems.
+
+security.enabled = false 
+
+# Optional BLACK list of blocked IP addresses. All requests coming fro these
+# addresses are rejected. Please note that regular expressions depend on whether
+# IPv4 or IPv6 is used. The examples below are valid for  IPv4.
+
+#blocked.ip.addresses = ^130\.155\.201\.106
+
+# Optional WHITE list of privileged IP addresses. Requests coming from these
+# addresses are let through, unless authentication is explicitly requested.
+# allowed.users, allowed.groups, allowed.sites and allowed.areas are automatically
+# assigned to unauthenticated requests from IP addresses on the WHITE list.
+# Please note that regular expressions depend on whether IPv4 or IPv6 is used.
+ 
+#allowed.ip.addresses = ^130\.155\.17[6-9]\..+ ^130\.155\.18[6-9]\..+
+#allowed.ip.addresses = ^130\.155\.19[6-9]\..+ ^130\.155\.21[6-9]\..+
+
+# Optional list of user names assigned to unauthenticated requests coming from
+# IP addresses on the WHITE list.
+# Use "all" or comment out to allow all user names.
+
+#allowed.users = admin guest
+
+# Optional list of group names assigned to unauthenticated requests coming from
+# IP addresses on the WHITE list.
+# Use "all" or comment out to allow all groups.
+
+#allowed.groups = staff public
+
+# Optional list of visible sites assigned to requests passed without authentication
+# Use "all" or comment out to disble site filter.
+
+#allowed.sites = all
+
+# Optional list of visible areas assigned to requests passed without authentication
+# Use "all" or comment out to disble area filter.
+
+#allowed.areas = all
+
+# Optional list of user names assigned to unauthenticated requests coming from 
+# IP addresses NOT matching the white or black lists.
+# Use "all" or comment out to allow all user names.
+
+default.users = guest
+
+# Optional list of group names assigned to requests matvh
+# Use "all" or comment out to allow all groups.
+
+default.groups = public
+
+# Optional list of visible sites assigned to requests passed without authentication
+# Use "all" or comment out to disble site filter.
+
+default.sites = all
+
+# Optional list of visible areas assigned to requests passed without authentication
+# Use "all" or comment out to disble area filter.
+
+default.areas = all
+
+# Optional. A list of IP address to allow admin access to Solr server from. Clients
+# from these addresses will have full unfiltered access to Solr server and will
+# be able to updade and delete the contents there. Note that if distributed crawling
+# is performed, addresses of all computers in the cluster have to be on this list.
+# Leave this parameter commented out to allow admin access from any IP address.
+
+# A GENERAL ADVICE: for trial runs, turn off security measures so that they do
+# not cause problems. Else you may experience problems and spend a long time looking
+# for the cause just to find out that, for example, you've indexed everything
+# correctly, but your queries do not return anything just becuase your access
+# permissions are too strict.
+
+#admin.ip.addresses = ^127.0.0.1
+
+
+
+#=========================== PHP front-end configuration ======================
+
+# NOTE: UNLESS PARAMETER “DOMAIN” IS SENT WITH REQUEST, front-end authentication
+# related parameters are taken from the global configuration file and must
+# be declared there. If “domain” is sent in request, it must match name of a
+# site. All authentication related parameters will be taken from that site
+# configuration file and access will be limited to that site data only.
+
+# NOTE: frontent.profile parameter is expected by the Arch reference authentication 
+# plugin. It is very likely that you will want to replace it with a plugin 
+# implementing authentication method used in your organization. Your plugin may 
+# use a different configuration parameters set.
+#
+# Front-end search profile parameter defines front-end id, password, sites and
+# areas that the front-end is allowed to search and users and groups that are
+# allowed to do search via this front-end. The fields are separated by ‘|’. The 
+# required parameters are the id and password. The rest can be left blank.  
+# frontend.profile = id | password | site1 site2 | area1 area2 | group1 group2 | 
+# user1 user2
+
+frontend.profile = global | pass1
+
+# Users and groups files. This is also a parameter required by Arch reference
+# authentication plugin implementing Apache file based authentication scheme.
+
+# Users and groups files 
+auth.passwords.file = /opt/arch-1.4/conf/arch/testPasswords.txt
+auth.groups.file = /opt/arch-1.4/conf/arch/testGroups.txt
+
+
+#===============================================================================
+#                     Security scanning and document cleaning
+#===============================================================================
+
+# Enable or disable Arch security scanning and document cleaning related features.
+# Arch can monitor your site for potential threats, new and changed pages, scripts
+# and links. You can define clues to look for and Arch will notify you when it
+# finds something. However, security scanning has a cost because extra processing
+# is involved. For better protection, it is desirable to scan not only output
+# pages (such as those produced by PHP), but the source (PHP) scripts as well. If
+# you do not want to do security scanning or not ready to configure scanning
+# parameters, just disable security scanning for now.
+# It is recommended that scanning is switched off during first crawl, else it will
+# generate too many alerts, as every page and link will be new to it.
+
+scan.enabled = false
+
+
+# Output (whatever the browser or the crawler receives) of pages with these file
+# types will be scanned. Type in file types separated by space.
+
+scan.file.types = htm html php php3 php4 php5 asp aspx jsp do
+
+
+# Source code of pages with these file types will be scanned. Note that a way to
+# download this source code must be provided. See scan.source.access.url parameter.
+# Type in file types separated by space.
+  
+scan.src.file.types = php php3 php4 php5
+
+
+# Output (whatever the browser or the crawler receives) of pages with these content
+# types will be scanned. Type in content types separated by space or pipe character.
+
+scan.content.types = text/html | text/javascript
+
+
+# Source code of pages with these content types will be scanned. Note that a way to
+# download this source code must be provided. Type in content types separated by
+# space.
+
+scan.src.content.types = text/html text/javascript
+
+
+# To scan sources of web pages, it must be possible to download them as they
+# are before they go through a web server. Source download URL is address of a
+# script that takes URL of a page as a parameter and serves the source code. The
+# parameter is just concatenated to the URL string.
+
+# Example:
+# scan.source.access.url = http://www.mysite.com/protected/getsource.php?url=
+
+
+# Output (whatever the browser or the crawler receives) of pages with these file
+# types will be cleaned before indexing by removing fragments defined by the
+# scan.ignore.bits parameter. Type in file types separated by space.
+
+prune.file.types = htm html php php3 php4 php5 asp aspx jsp do
+
+
+# Output (whatever the browser or the crawler receives) of pages with these content
+# types will be cleaned before indexing by removing fragments defined by the
+# scan.ignore.bits parameter. Type in file types separated by space.
+
+prune.content.types = text/html | text/javascript
+
+
+# Strings to use to find script fragments in pages. Type in start and end strings
+# separated by <b>pipe<b> character.
+
+scan.script.edges = <? | ?> 
+scan.script.edges = <script | script> 
+
+
+# Strings identifying text fragments to ignore. This can be
+# used, for example, to avoid indexing of common page fragments, such as headers
+# and footers. Type one pair per line, separate start and end strings with a pipe
+# character. Each pair must be enclosed in '[' or ,'{' at the start and ']' or '}'
+# at the end. '[' and ']' mean ignore the fragment, including the boundary string.
+# '{' and '}' mean ignore the fragment, not including the boundary string.
+
+# Examples:
+# scan.ignore.bits = [ <div class="header"> | <div class="content"> }
+# scan.ignore.bits = [ <div class="footer"> | </html> }
+
+
+# Script fragments containing these strings will be ignored. This can be used,
+# for example, to avoid scanning and reporting of common scripts, such as those
+# used to generate headers and footers. Use with care as attackers may include one
+# of such fragments in their script to hide it. Separate strings with a pipe
+# character.
+ 
+# Example:
+# scan.ignore.scripts = <?php include("header.inc"); ?> | <?php include("footer.inc"); ?> 
+
+# The listed links will be ignored. This can be used, for example, to avoid
+# reporting of common scripts, such as those occurring in headers and footers.
+
+# Examples: 
+# scan.ignore.links = http://www.mysite.com/contactus.html
+# scan.ignore.links = http://www.mysite.com/home.html
+
+
+# Rise an alert of this level if found this string while scanning output or
+# source of the page, or both. Each alert entry consists of three fields separated
+# by a pipe character. The first field is the string to look for. The second
+# field is the level of alert to rise: SAFE, UNSURE, UNSAFE or THREAT. The third
+# field is what to scan: OUT - only output of the page, SRC - only source of the
+# page, BOTH - both of them. 
+
+# Examples:
+# scan.alert = mail( | UNSAFE | src
+# scan.alert = $_REQUEST | UNSURE | src
+# scan.alert = http://hostile.com | THREAT | both
+
+
+# Level of alerts to rise: SAFE, UNSURE, UNSAFE, THREAT. The SAFE level is most
+# detailed, THREAT alerts of only most serious problems found.
+# Found new and changed pages, links, forms and scripts are of UNSURE level. If
+# the alert level is set to UNSAFE or THREAT, they will be ignored even if their
+# reporting is enabled below.
+
+scan.alert.level= UNSURE
+
+
+# Report found new or changed pages, forms, scripts and links. Note that all
+# these notifications are of UNSURE level. If your alerts level is set to UNSAFE
+# or THREAT, change reports will not be sent.
+
+scan.report.new.pages = true 
+scan.report.new.forms = true 
+scan.report.new.scripts = true 
+scan.report.changed.pages = true 
+scan.report.changed.forms = true 
+scan.report.changed.scripts = true 
+scan.report.link.changes = true 
+
+
+# Script fragments of size smaller than this are ignored. Use with care.
+
+scan.min.script.size = -1
+
+
+# File type of index files that are automatically served if URL ends with "/",
+# for example, http://www.mysite.com/somepath/. This is used to make decisions
+# on whether to scan index files according to values of scan.file.types and
+# scan.src.file.types
+
+scan.index.file.type = html
+
+
+#===============================================================================
+#                                Notifications
+#===============================================================================
+
+# This set of parameters controls email notofications. They can be redefined in 
+# sites config files to send separate email messages for each site that requires
+# it.
+
+# Level of details in mail messages:
+# DEBUG, INFO, WARN, ERROR, OFF
+# DEBUG level is most detailed, OFF switches email notifications OFF.
+# Please note that email notifications are not designed to provide detailed reports.
+# To get details, see log files. 
+
+mail.level = OFF
+
+# Mail protocol to use. Optional. The default value is smtp.
+
+mail.transport.protocol = smtp 
+
+# Mail server address. Required.
+
+mail.host = mail.mycompany.com
+
+# Mail user name, if mail server requires authentication.
+
+mail.user = itsme
+
+# Mail user password, if mail server requires authentication.
+
+mail.pass = mypassword
+
+# Email message subject to use. Optional. The default value is 
+# Arch indexing report
+
+mail.subject = My message from Arch
+
+# Adresses of recipients. Required.
+# If it is not defined, email messages are not sent.
+# "global" message sent in accordance with the global config file parameters.
+# There can be multiple recipients separated by ';', ':' or ','.
+
+mail.recipient = address1@mycompany.com; address2@anothercompany.com
+

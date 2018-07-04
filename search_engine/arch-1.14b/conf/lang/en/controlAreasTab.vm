@@ -1,0 +1,190 @@
+<!-- ================================================================================================= -->
+<!--                                             AREAS TAB                                             -->
+<!-- ================================================================================================= -->
+   <div data-dojo-type="dijit.layout.ContentPane" title="Areas" id="areas" style="display:none;"  class="archTab">
+<fieldset>
+  <legend>Common parameters</legend>
+         <table class="options">
+           <tr id="tr.of.enabled">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Is enabled</td>
+             <td class="paramText">
+                <input id="enabled" dojoType="dijit.form.CheckBox" value="enabled" checked>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.enabled" style="display:none"><td colspan=3>
+                Area status. Area can be either enabled or disabled. If disabled, it is not included in crawling and the index.
+                Please note that just disabling an area will not delete its data from the index.
+           </td></tr>
+           <tr id="tr.of.area">
+             <td class="paramLabel" colspan=2>Area name</td>
+             <td class="paramText">
+                <div id="area" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;">
+                  MyArea
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.area" style="display:none"><td colspan=3>
+                Area name. Must be unique in the site, alphanumeric, up to 30 characters long. It cannot be changed here. To rename
+                an area, delete it and create a new one.
+           </td></tr>
+
+        </table>
+</fieldset>
+<fieldset>
+  <legend>Area crawling parameters</legend>
+         <table class="options">
+           <tr id="tr.of.interval">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Re-indexing interval, days</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="7" smallDelta="1" largeDelta="10"
+                       constraints="{min:1,places:0}" id="interval" name="interval" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.interval" style="display:none"><td colspan=3>
+                Defines refresh period for this area.
+           </td></tr>
+           <tr id="tr.of.Sun">
+             <td class="paramLabel" colspan=2>Allowed re-indexing days</td>
+             <td class="paramText">
+               <input id="sun" dojoType="dijit.form.CheckBox" value="sun" checked><label for="sun">Sun</label>
+               <input id="mon" dojoType="dijit.form.CheckBox" value="mon" checked><label for="mon">Mon</label>
+               <input id="tue" dojoType="dijit.form.CheckBox" value="tue" checked><label for="tue">Tue</label>
+               <input id="wed" dojoType="dijit.form.CheckBox" value="wed" checked><label for="wed">Wed</label>
+               <input id="thu" dojoType="dijit.form.CheckBox" value="thu" checked><label for="thu">Thu</label>
+               <input id="fri" dojoType="dijit.form.CheckBox" value="fri" checked><label for="fri">Fri</label>
+               <input id="sat" dojoType="dijit.form.CheckBox" value="sat" checked><label for="sat">Sat</label>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.Sun" style="display:none"><td colspan=3>
+                Area crawling is allowed to start only on these days. You may want to allow indexing of large areas
+                only on weekends, when other server load is low.
+           </td></tr>
+           <tr id="tr.of.area.depth">
+             <td class="paramLabel" colspan=2>Indexing depth</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="50" smallDelta="1" largeDelta="10" 
+                       constraints="{min:1,max:10000,places:0}" id="area.depth" name="area.depth" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.area.depth" style="display:none"><td colspan=3>
+                Area crawling depth. Defines how many crawling iterations to do by default when indexing thia area. Each area can
+                overwrite this parameter, if indexed sequentially. After deploying Arch, it is recommended to do a trial crawl with a
+                shallow depth, e.g. 2. If everything works, run the bin/clean script, set the depth to a desired value and do a
+                production crawl. It is recommended to leave this field blank. Then the value will be taken from the root
+                configuration file.<br><br>
+                <b>Note:</b> If parallel indexing is used, the indexing depth, max urls and parallel threads defined for all
+                areas involved are ignored because these parameters are taken from the root configuration for parallel indexing.
+           </td></tr>
+           <tr id="tr.of.area.threads">
+             <td class="paramLabel" colspan=2>Parallel threads</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="10" smallDelta="1" largeDelta="5"
+                       constraints="{min:1,max:10000,places:0}" id="area.threads" name="area.threads" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.area.threads" style="display:none"><td colspan=3>
+                Number of concurrent threads to use for crawling. If left blank, the value is be taken from the root
+                configuration file.
+           </td></tr>
+
+        </table>
+</fieldset>
+<fieldset id="area.contents">
+  <legend>Area contents</legend>
+         <table class="options">
+           <tr id="tr.of.root">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Root URLs</td>
+             <td class="paramText">
+                <textarea id="root" dojoType="dijit.form.Textarea" style="width:100%">
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.root" style="display:none"><td colspan=3>
+             URLs used as starting points to crawl the area. There is no practical
+             limit on the number of roots. Put in a number of addresses of well connected pages in the area.
+           </td></tr>
+           <tr id="tr.of.include">
+             <td class="paramLabel" colspan=2>Include filters</td>
+             <td class="paramText">
+                <textarea id="include" dojoType="dijit.form.Textarea" style="width:100%">
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.include" style="display:none"><td colspan=3>
+               Prefix include filters for the area. A URL is included in the area if it is a root
+               of this area (see above), or it matches (starts with) at least one include filter and none of the
+               exclude filters.
+           </td></tr>
+           <tr id="tr.of.exclude">
+             <td class="paramLabel" colspan=2>Exclude filters</td>
+             <td class="paramText">
+                <textarea id="exclude" dojoType="dijit.form.Textarea" style="width:100%">
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.exclude" style="display:none"><td colspan=3>
+               Prefix exclude filters for the area. A URL is included in the area if it is a root
+               of this area (see above), or it matches (starts with) at least one include filter and none of the
+               exclude filters.
+           </td></tr>
+        </table>
+</fieldset>
+<fieldset class="djTextBox" id="bookmarks">
+  <legend>Bookmarks</legend>
+         <table class="options">
+           <tr id="tr.of.file.bookmarks">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Bookmark files</td>
+             <td class="paramText">
+                <textarea id="file.bookmarks" dojoType="dijit.form.Textarea" style="width:100%">
+                </textarea>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.file.bookmarks" style="display:none"><td colspan=3>
+             A list of files to take bookmark URLs from, one in a line. Each file must contain valid URLs, one in a line.
+             Bookmarks are miscellaneous URLs that do not have to belong to your site. Using bookmark areas, it is possible to
+             index sets of arbitrary URLs.
+            </td></tr>
+         <tr id="tr.of.usersread.bookmarks">
+             <td class="paramLabel" colspan=2>Bookmarks visible to users</td>
+             <td class="paramText">
+                <div id="usersread.bookmarks" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                  guest
+                </div> 
+             </td>                       
+         </tr>
+         <tr class="helpRow" id="help.for.usersread.bookmarks" style="display:none"><td colspan=3>
+                Access permissions work a bit differently for bookmarks because bookmarks 
+                are a set of miscellaneous urls that do not have a hierarchical structure that a
+                web site has. Placing &quot;guest&quot; in this field has an effect of making bookmarks visible
+                to everyone.
+         </td></tr>
+         <tr id="tr.of.groupsread.bookmarks">
+             <td class="paramLabel" colspan=2>Bookmarks visible to groups</td>
+             <td class="paramText">
+                <div id="groupsread.bookmarks" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox"
+                     style="border-bottom: 1px dashed blue;">
+                 public
+                </div> 
+             </td>                       
+         </tr>
+         <tr class="helpRow" id="help.for.groupsread.bookmarks" style="display:none"><td colspan=3>
+                A list of names of groups to whom bookmarks are
+                visible. Placing &quot;public&quot; in this field has an effect of making bookmarks visible
+                to everyone.
+         </td></tr>
+        </table>
+</fieldset>
+</div> 

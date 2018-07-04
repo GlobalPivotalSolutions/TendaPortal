@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+ <!-- TRANSLATING THE GUI TO A DIFFERENT LANGUAGE:
+      -- Translate the HTML code.
+      -- Translate the messages in the error messages table below. Do not change their keys (on the left).
+  -->
+  <link rel="stylesheet" href="../css/arch-blue.css" media="screen">
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/claro.css" media="screen">
+  <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/dojo/1.7.1/dijit/themes/claro/Grid.css" media="screen">
+  <link rel="stylesheet" type="text/css" href="../css/test.css" />
+  <link rel="shortcut icon" type="image/x-icon" href="../images/favicon.ico"/> 
+
+  <script src="../scripts/dojoroot/dojo/dojo.js" data-dojo-config="async:true, parseOnLoad:true, paths:{'control':'../../control'}"></script>
+<!--  <script data-dojo-config="async: 1, dojoBlankHtmlUrl: 'scripts/control/blank.html',
+        packages: [ {
+            name: 'control',
+            location: location.pathname.replace(/\/[^/]+$/, '') + '/scripts/control'
+        } ]"
+    src="//ajax.googleapis.com/ajax/libs/dojo/1.7.1/dojo/dojo.js"></script>
+--> 
+ <script>
+  // Error messages table
+  var archMsgTable =
+  {
+    "" : "",
+    "Invalid" : "The current item value is invalid",
+    "Required" : "This is a required parameter",
+    "Server-side validation" : "Server-side validation in progress...",
+    "No bookmarks file" : "Bookmarks file does not exist.",
+    "Unreadable bookmarks file" : "Cannot read bookmarks file.",
+    "No temp directory" : "Cannot create working directory.",
+    "No writing to temp" : "Cannot write to working directory.",
+    "Mail test failed" : "Trying to post a test email was unsuccessful.",
+    "No plugin" : "No plugin exists for this database.",
+    "Database test failed" : "Database test failed.",
+    "Invalid_URL" : "Invalid URL",
+    "Nutch plugins configuration error" : "Check your Nutch plugins configuration",
+    "Invalid_Permissions" : "Invalid permissions record",
+    "Empty_roots" : "You need to provide at least one root entry",
+    "Empty_includes" : "You need to provide at least one include filter",
+    "Invalid_root_record" : "Invalid root entry",
+    "Invalid_include_record" : "Invalid include entry",
+    "Invalid_exclude_record" : "Invalid exclude entry",
+    "Invalid_Area_Name" : "Area name must be unique, alphanumeric, up to 30 characters.",
+    "Area_Exists" : "An area with this name already exists.",
+    "No_Areas_In_Root" : "Root configuration does not have areas. Select a site first.",
+    "Invalid_Site_Name" : "Site name must be unique, alphanumeric, up to 30 characters.",
+    "Failed_To_Save" : "Failed to save configuration of site ",
+    "Unsaved_Changes" : "There are unsaved chnages. Would you like to save them?",
+    "Delete_Site" : "Delete site ", 
+    "Could not delete site" : "Could not delete the site.", 
+    "Could not delete area" : "Could not delete the area.", 
+    "Delete_Area" : "Delete area ", 
+  } ;
+  </script>
+  <script> require( [ "control/Controller", "control/ConfigStore", "dijit/Tree", "dojo/on", "dojo/ready",
+                      "dijit/layout/BorderContainer",
+                      "dijit/layout/TabContainer", "dijit/layout/ContentPane", "dojo/parser", "dijit/MenuBar",
+                      "dijit/PopupMenuBarItem", "dijit/DropDownMenu", "dijit/MenuItem", "dojo/_base/kernel",
+                      "dojo/_base/loader", "dijit/InlineEditBox", "dijit/form/Textarea", "dijit/form/Select",
+                      "dijit/form/CheckBox", "dijit/form/NumberSpinner", "dojox/grid/DataGrid", "dijit/Dialog",
+                      "dijit/Toolbar" , "dijit/form/Button", "dijit/form/ToggleButton", "dijit/ToolbarSeparator",
+                      "dijit/form/ComboBox" ],
+                      function( Controller, ConfigStore, Tree, on, ready ) 
+                       { 
+                         controller = new Controller() ;
+                         store = new ConfigStore( { target: "control?ar_action=sendNode&ar_id=" } ) ;
+                         tree = new Tree( { model: store, showRoot:true, persist: false }, "tree") ;
+                         tree.configController = controller ;
+                         store.configController = controller ;
+                         controller.navigationTree = tree ;
+                         // tree.onOpen = controller.treeClick ;
+                         // tree.onClick = controller.treeClick ;
+                         //tree._onClick = controller.treeClick ;
+                         on( tree, "click", function( e ) { controller.treeClick( e ) ; } ) ;
+                         on( tree, "open", function( e ) { controller.treeClick( e ) ; } ) ;
+                         tree.startup();
+
+                         ready( function() { controller.ready() ; } ) ;
+                       }  
+                  ) ; </script>
+
+   <style TYPE="text/css">
+     tr.helpRow > td { padding-left:1cm; padding-right:1cm; border-style:dashed ; border-width:1px; background-color:white ;
+                       text-align:justify; }
+     td {padding:5px}
+     td.tipMark { padding:0px; } 
+     td.paramLabel { text-align: right; font-weight: bold; width: 200px ; }
+     tr.wizparam td.paramLabel { text-align: right; font-weight: bold; width: 200px ; }
+     table.options { width: 100% }
+     table.navigation img { width: 40px; height: 40px; }
+     table.statusBar img { width: 40px; height: 40px; }
+     table.statusBar td { padding:0px; }
+     span.tipMark { position:absolute;left:0px;top:0px;}
+     td.errorMessage { background-color: pink ; }
+     td.emptyMessage { background-color: white ; }
+     .archError { background-color: pink ; border-colr: red ; }
+   </style> 
+  </head>
+  <body class="claro" style="height:100%;">
+   <div id="appLayout" data-dojo-type="dijit.layout.BorderContainer" data-dojo-props="design: 'headline'" style="height:100%;">
+     <div class="edgePanel" id="menu" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region: 'top'" style="padding:0;">
+      <table><tr><td style="padding:0px;"> 
+       <div data-dojo-type="dijit.MenuBar" id="navMenu" style="margin:0;">
+         <div data-dojo-type="dijit.PopupMenuBarItem">
+           <span>File</span>
+           <div data-dojo-type="dijit.DropDownMenu" id="fileMenu">
+             <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){controller.saveChanges();}">Save</div>
+             <div dojoType="dijit.PopupMenuItem" id="submenu1">
+               <span>New</span>
+               <div dojoType="dijit.Menu">
+                 <div dojoType="dijit.MenuItem" onClick="controller.startWizard('site');">New site</div>
+                 <div dojoType="dijit.MenuItem" onClick="controller.startWizard('area');">New area</div>
+               </div>
+             </div>          
+             <div dojoType="dijit.PopupMenuItem" id="submenu2">
+               <span>Delete</span>
+               <div dojoType="dijit.Menu">
+                 <div dojoType="dijit.MenuItem" onClick="controller.deleteSite();">Delete site</div>
+                 <div dojoType="dijit.MenuItem" onClick="controller.deleteArea();">Delete area</div>
+               </div>
+             </div>          
+             <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){dijit.byId('startWizard').show();}">Wizards</div>
+<!--             <div data-dojo-type="dijit.MenuItem" data-dojo-props="onClick:function(){controller.exit();}">Exit</div> -->
+           </div>
+         </div>
+       </div>
+      </td><td style="padding:0px;">
+      <a href="#" onclick="controller.saveChanges();" title="Save changes"><img src="../images/save.png" width=40 height=40></a>
+      <a href="#" onclick="controller.startWizard('site');" title="Create new site"><img src="../images/newsite.png" width=40 height=40></a>
+      <a href="#" onclick="controller.startWizard('area');" title="Create new area"><img src="../images/newarea.png" width=40 height=40></a>
+      <a href="#" onclick="dijit.byId('startWizard').show();" title="Wizards"><img src="../images/wizard.png" width=40 height=40></a>
+<!--      <a href="#" onclick="controller.exit();" title="Exit"><img src="images/quit.png" width="40" height="40"></a> -->
+      </td></tr></table>
+    </div>
+    <div id="navigator" class="edgePanel" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region: 'left', splitter: true"
+          style="width:12em;overflow:scroll;">
+      <div id="tree"></div>
+      <div style="width:12em;">&nbsp;</div>
+    </div>
+    <div class="centerPanel" data-dojo-type="dijit.layout.TabContainer" id="tabs" data-dojo-props="region: 'center'">
+#parse ( "controlGeneralTab.vm" )
+#parse ( "controlLogProcessingTab.vm" )
+#parse ( "controlAccessTab.vm" )
+#parse ( "controlSecurityTab.vm" )
+#parse ( "controlCrawlingTab.vm" )
+#parse ( "controlAreasTab.vm" )
+    </div>
+    <div class="edgePanel" id="status" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region: 'bottom'" style="padding:0px;">
+     <table class="statusBar" width="100%">
+       <tr style="margin:0px;padding:0px;">
+         <td style="padding:0px;"><img src="../images/unsaved.png" id="unsaved" title="There are unsaved changes." style="display:none"></td>
+         <td style="padding:0px;" id="message" class="emptyMessage" width="98%" align="center">&nbsp;</td>
+         <td style="padding:0px;"><img src="../images/alarm.png" id="alarm" title="Error" style="display:none"></td>
+       </tr>
+     </table>
+    </div>
+   </div>
+   <div class="edgePanel" data-dojo-type="dijit.layout.ContentPane" data-dojo-props="region: 'bottom'" style="display:none">My invisible div</div>
+  </body>
+</html>

@@ -1,0 +1,189 @@
+<!-- ================================================================================================= -->
+<!--                                            CRAWLING TAB                                           -->
+<!-- ================================================================================================= -->
+<div data-dojo-type="dijit.layout.ContentPane" title="Crawling" id="crawling"  class="archTab">
+<fieldset>
+  <legend>Crawler identity</legend>
+         <table class="options">
+           <tr id="tr.of.http.agent.name">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Crawler name</td>
+             <td class="paramText">
+                <div id="http.agent.name" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;" required="true">
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.http.agent.name" style="display:none"><td colspan=3>
+                HTTP &quot;User-Agent&quot; request header. MUST NOT be empty - please set this to a single word uniquely related to your organization. <br>Example: Archer
+           </td></tr>
+           <tr id="tr.of.http.agent.description">
+             <td class="paramLabel" colspan=2>Crawler description</td>
+             <td class="paramText">
+                <div id="http.agent.description" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;" required="true">
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.http.agent.description" style="display:none"><td colspan=3>
+                Further description of your bot - this text is used in the &quot;User-Agent&quot; header. It appears in parenthesis after the agent name. <br>Example: Arch based crawler
+           </td></tr>
+           <tr id="tr.of.http.agent.url">
+             <td class="paramLabel" colspan=2>Crawler url</td>
+             <td class="paramText">
+                <div id="http.agent.url" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;" required="true">
+                  
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.http.agent.url" style="display:none"><td colspan=3>
+                A URL to advertise in the User-Agent header.  This will  appear in parenthesis after the agent name. Custom dictates that this
+                should be a URL of a page explaining the purpose and behavior of this crawler.
+                <br>Example: http://your.company.com/crawler/description
+           </td></tr>
+           <tr id="tr.of.http.agent.email">
+             <td class="paramLabel" colspan=2>Crawler email</td>
+             <td class="paramText">
+                <div id="http.agent.email" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;" required="true">
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.http.agent.email" style="display:none"><td colspan=3>
+                An email address to advertise in the HTTP &quot;From&quot; request header and User-Agent header. A good practice is to mangle this
+                address (e.g. &quot;info at example dot com&quot;) to avoid spamming.
+           </td></tr>
+           <tr id="tr.of.http.agent.version">
+             <td class="paramLabel" colspan=2>Crawler version</td>
+             <td class="paramText">
+                <div id="http.agent.version" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;" required="true">
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.http.agent.version" style="display:none"><td colspan=3>
+                A version string to advertise in the User-Agent header.
+                <br>Example Arch-1.4
+           </td></tr>
+           <tr id="tr.of.http.robots.agents">
+             <td class="paramLabel" colspan=2>Crawler filter</td>
+             <td class="paramText">
+                <div id="http.robots.agents" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;" required="true">
+                  Archer,*
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.http.robots.agents" style="display:none"><td colspan=3>
+                The crawler strings we will look for in robots.txt files, comma-separated, in decreasing order of precedence. You should
+                put the value of http.agent.name as the first agent name, and keep the default * at the end of the list. 
+                <br>Example: Archer,*
+           </td></tr>
+           <tr id="tr.of.http.agent.host">
+             <td class="paramLabel" colspan=2>Crawler host</td>
+             <td class="paramText">
+                <div id="http.agent.host" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" style="border-bottom: 1px dashed blue;" required="true">
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.http.agent.host" style="display:none"><td colspan=3>
+                Name or IP address of the host on which the Arch crawler would be running. Currently this is used by the protocol-httpclient
+                plugin. <br>Example: searchserver.mycompany.com
+           </td></tr>
+        </table>
+</fieldset>
+<fieldset>
+  <legend>Crawling parameters</legend>
+         <table class="options">
+           <tr id="tr.of.parallel.indexing">
+             <td class="tipMark"><a href="#" onClick="controller.toggleHelp( this );" title="Click here to show or hide help.">
+                      <img src="../images/info.png" width=40 height=40></a>
+             </td>
+             <td class="paramLabel">Parallel indexing</td>
+             <td class="paramText">
+                <input id="parallel.indexing" dojoType="dijit.form.CheckBox" value="parallel" checked>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.parallel.indexing" style="display:none"><td colspan=3>
+                If off, areas are crawled sequentially, one at a time. The sequential mode is recommended for troubleshooting a new
+                installation or after a new site has been added. In this mode, if indexing fails, you can fix the problem and restart
+                indexing. It will skip areas that have been processed successfully in the previous run. The parallel mode may
+                significantly decrease the time of indexing. Note that bookmarks areas will be processed sequentially
+                even if parallel processing is switched on.
+           </td></tr>
+           <tr id="tr.of.depth">
+             <td class="paramLabel" colspan=2>Indexing depth</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="50" smallDelta="1" largeDelta="10" 
+                       constraints="{min:1,max:10000,places:0}" id="depth" name="depth" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.depth" style="display:none"><td colspan=3>
+                Default crawling depth. Defines how many crawling iterations to do by default when indexing an area. Each area can
+                overwrite this parameter, if indexed sequentially. After deploying Arch, it is recommended to do a trial crawl with a
+                shallow depth, e.g. 2. If everything works, run the ArchHome/bin/clean script, set the depth to a desired value and do a
+                production crawl.
+           </td></tr>
+           <tr id="tr.of.depth.loglinks">
+             <td class="paramLabel" colspan=2>Log links indexing depth</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="50" smallDelta="1" largeDelta="10" 
+                       constraints="{min:1,max:10000,places:0}" id="depth.loglinks" name="depth.loglinks" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.depth.loglinks" style="display:none"><td colspan=3>
+                Default crawling depth for links found in log files. This parameter is only used when sequential processing
+                is done and can be overwritten in loglinks areas configurations. After indexing all areas of a site, links that are
+                found in the site logs, but have not been crawled yet,
+                are used as starting points for another round of crawling. It is not recommended that this parameter is set 
+                to higher than 2 because in this case too many URLs that have already been crawled in previous stages
+                will be re-crawled and create duplicated entries in the index. If your site has too many isolated areas 
+                which are discovered only via log links, the parallel crawling mode is the recommended option. In parallel
+                crawling, all pre-configured crawling roots together with all links found in logs are used as
+                starting points of crawling with no risk of creating many duplicates because they are crawled together
+                and Nutch is making sure that no link is fetched twice.  
+           </td></tr>
+           <tr id="tr.of.max.urls">
+             <td class="paramLabel" colspan=2>Max urls</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="10000" smallDelta="100" largeDelta="10000"
+                       constraints="{min:100,places:0}" id="max.urls" name="max.urls" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.max.urls" style="display:none"><td colspan=3>
+                Default max number of urls to fetch on each iteration. This is passed to Nutch as the topN parameter.
+                Note: if defined, the total size of an area index is limited to the depth multiplied by max urls number.
+           </td></tr>
+           <tr id="tr.of.threads">
+             <td class="paramLabel" colspan=2>Parallel threads</td>
+             <td class="paramText">
+                <input dojoType="dijit.form.NumberSpinner" value="10" smallDelta="1" largeDelta="5"
+                       constraints="{min:1,max:10000,places:0}" id="threads" name="threads" />
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.threads" style="display:none"><td colspan=3>
+                Number of concurrent threads to use for crawling.
+           </td></tr>
+           <tr id="tr.of.remove.duplicates">
+             <td class="paramLabel" colspan=2>Remove duplicates</td>
+             <td class="paramText">
+                <input id="remove.duplicates" dojoType="dijit.form.CheckBox" value="duplicates" checked>
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.remove.duplicates" style="display:none"><td colspan=3>
+                Switches on and off removing duplicate entries from the index. They can result, for example, from indexing URLs aliases. Note
+                that if you create overlapping areas, the resulting duplicated URLs will not be removed. This also applies to URLs indexed as
+                bookmarks. They will not be removed even if they occur in other arreas.
+           </td></tr>
+
+           <tr id="tr.of.watch.mode">
+             <td class="paramLabel" colspan=2>Watch mode</td>
+             <td class="paramText">
+                <input id="watch.mode" dojoType="dijit.form.CheckBox" value="mode">
+             </td>                       
+           </tr>
+           <tr class="helpRow" id="help.for.watch.mode" style="display:none"><td colspan=3>
+                Switches on and off watch mode. In this mode Arch scans new log records for new URLs and adds these URLs to the index.
+                See Arch deployment manual for more information.
+           </td></tr>
+
+        </table>
+</fieldset>
+      </div>

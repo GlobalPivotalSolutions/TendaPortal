@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-derby"
+   name="Arch Derby plugin"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-derby.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.sql.DBInterface"
+              name="Arch Derby plugin"
+              point="au.csiro.cass.arch.sql.DBInterface">
+      <implementation id="DBInterfaceDerby"
+                      class="au.csiro.cass.arch.sql.DBInterfaceDerby">
+         <parameter name="database" value="Derby"/>
+      </implementation>
+   </extension>
+
+</plugin>

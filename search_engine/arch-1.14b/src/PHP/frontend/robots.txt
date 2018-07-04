@@ -1,0 +1,6 @@
+#-----------------------------------------------------------------------------
+# robots.txt
+
+User-Agent: *
+Disallow: /                               # whole site - you may not want this
+#

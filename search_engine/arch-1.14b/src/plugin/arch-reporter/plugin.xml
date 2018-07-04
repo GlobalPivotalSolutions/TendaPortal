@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin
+   id="arch-reporter"
+   name="Arch scan reporter"
+   version="1.7"
+   provider-name="cass.csiro.au">
+
+
+   <runtime>
+      	<library name="arch-reporter.jar">
+      		<export name="*"/>
+      	</library>
+   </runtime>
+
+   <requires>
+		<import plugin="nutch-extensionpoints"/>
+   </requires>
+
+   <extension id="au.csiro.cass.arch.security.Reporter"
+              name="Arch scan reporter"
+              point="au.csiro.cass.arch.security.Reporter">
+      <implementation id="ArchBasicReporter"
+                      class="au.csiro.cass.arch.security.BasicReporter"/>
+   </extension>
+
+</plugin>
+

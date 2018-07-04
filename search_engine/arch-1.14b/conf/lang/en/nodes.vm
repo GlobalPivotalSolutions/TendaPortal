@@ -1,0 +1,3 @@
+#foreach( $node in $nodes )
+#parse( "node.vm" ) 
+#end

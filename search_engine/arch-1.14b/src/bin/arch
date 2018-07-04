@@ -1,0 +1,149 @@
+#!/bin/sh
+# Arch incremental daily crawling script. Normally, this script
+# should be run daily by cron. Arch will re-index only areas that are
+# due to be reindexed.
+#
+# To customise, set the variables below
+
+#set -x
+
+#**************************** CUSTOMIZE VARIABLES IN THIS SECTION *****************
+#**********************************************************************************
+# Arch home directory. The deafault value is the parent directory of the 
+# directory where you executing this script
+
+ARCH_HOME=$(dirname `pwd`)
+
+# Path to Java version to use
+# Example JAVA_HOME=/usr/lib/jvm/java-7-sun
+# Example for Cygwin: JAVA_HOME=/cygdrive/c/bin/JDK_1.7
+# Avoid installing Java to directories with a space in the path, like Program Files.
+
+JAVA_HOME=/usr/lib/jvm/java-8-oracle
+
+# Uncomment one (but not both!) of the lines below to use Hadoop native libraries
+# Do not uncomment anything if your platform is not Linux 64 or Linux 32.
+
+#HADOOP_LIBS=$ARCH_HOME/lib/native/Linux-amd64-64
+#HADOOP_LIBS=$ARCH_HOME/lib/native/Linux-i386-32
+
+# If using Arch with included Jetty servlet engine, provide port number for Jetty
+# NOTE: If you chamge the default value, you also have to change the solr.url
+# parameter in $ARCH_HOME/conf/arch/config.txt
+
+JETTY_PORT=8993
+
+# Give some extra memory to Jetty JVM so that Solr could use it for caches
+
+JETTY_OPTS="-Xms500m -Xmx2000m -Dsolr.log.dir=." 
+
+#**********************************************************************************
+#                               QUICK START PARAMETERS
+#**********************************************************************************
+# Parameters in this section are needed to run Arch in quick start mode, e.g for
+# evaluation or on a small web site. These parameters override values supplied in
+# configuration files. Uncomment and modify the provided examples to get Arch
+# started quickly.
+
+# THIS IS THE ONLY PARAMETER YOU HAVE TO SET TO GET ARCH GOING. 
+# URLs of well connected pages to use as starting points for crawling separated by 
+# '|'. Finish line with '\' to continue on the next line. The list can include
+# file names as well as URLs. If a file name is on the list, it must contain a list
+# of URls or file names (of files with other lists), one in each line.
+# NOTE: If trying to crawl over HTTPS, make sure that site certificates are present
+# in Java certificate store!
+# Example (NOTE the quotes!):
+
+CRAWLING_SEED="http://www.example.com/index.html |\
+               /var/urlsToCrawl.txt |\
+               http://www.other.com" 
+
+# Number of parallel threads to use for crawling.
+
+CRAWLING_THREADS=10
+
+# Number of crawling iterations to do (crawling depth). Start with a small number
+# (2) here and make sure that everything works as expected. Then set this value to 
+# crawling depth required to reach all pages of your site, normally 30+.
+
+CRAWLING_DEPTH=50
+
+# Max number of URLs to fetch in one iteration. With plenty of CPU and RAM
+# available, on a single machine, the optimal value of this parameters is in the
+# range of a few hundred thousand. 
+
+CRAWLING_MAX_URLS=10000
+
+# You should also change crawler identity parameters in
+# $ARCH_HOME/conf/nutch-site.xml, especially if you are going to crawl third party
+# sites.
+
+
+# AFTER CRAWLING IS SUCCESSFULLY FINISHED, GO TO
+# http://<put arch host name here>:8993/solr/arch/search and try to search indexed
+# content.
+#**********************************************************************************
+#********************************* END CUSTOMIZABLE SECTION ***********************
+
+arch=$ARCH_HOME
+
+PATH=/usr/local/bin:$JAVA_HOME/bin:/usr/bin:/bin; export PATH
+LIBS=$( echo $arch/lib/*jar . | sed 's/ /:/g')
+CLASSP=.:$JAVA_HOME:$arch:$arch/conf:$LIBS
+LDLIBS=$LD_LIBRARY_PATH:$HADOOP_LIBS
+
+if [[ "$OS" =~ Windows ]]; then
+echo "CYGWIN detected"
+CLASSP=`cygpath -wp $CLASSP`
+LDLIBS=`cygpath -wp $LDLIBS`
+ARCH_HOME=`cygpath -wp $ARCH_HOME`
+JAVA_HOME=`cygpath -wp $JAVA_HOME`
+fi
+
+NUTCH_HOME=$ARCH_HOME
+DERBY_HOME=$ARCH_HOME/derby
+DB_HOME=$ARCH_HOME/data
+
+export NUTCH_HOME
+export DERBY_HOME
+export DB_HOME
+export JAVA_HOME
+export JETTY_PORT
+export JETTY_OPTS
+export CRAWLING_SEED
+export CRAWLING_THREADS
+export CRAWLING_DEPTH
+export CRAWLING_MAX_URLS
+
+
+# java VM options to use
+# WARNING: Whatever amount of available memory you allocate to Java VM,
+# make sure that at least the same amount remains available in the free
+# memory plus swap space. Hadoop forks external processes to access shell
+# functions. This requires as much addidtional memory as the JVM uses.
+#
+opts="-XX:+UseConcMarkSweepGC -Xms500m -Xmx3000m -XX:MinHeapFreeRatio=10 -XX:MaxHeapFreeRatio=30 -XX:+CMSClassUnloadingEnabled"
+
+
+# This starts Arch Jetty server if it is not running. Comment it out if using Arch with other servlet container.
+# Note: if moving rebuilding ArchHome, dont't forget to kill the Jetty server. Else it will continue running,
+# broken, and will prevent new instance from starting.
+
+java $opts -Djava.library.path=$LDLIBS -cp $CLASSP au.csiro.cass.arch.solr.JettyStarter 
+
+# Uncomment one of the command lines to use
+
+# To generate encryption keys, uncomment and modify the two lines below
+#java $opts -cp $CLASSP au.csiro.cass.arch.logProcessing.LogProcessor \
+#       -a gk -c $ARCH_HOME/conf/arch/config.txt -o $arch/conf/arch/
+
+# To generate, compress and encrypt a log digest, uncomment and modify the two lines below
+#java $opts -cp $CLASSP au.csiro.cass.arch.logProcessing.LogProcessor \
+#     -a es -z -k $ARCH_HOME/conf/arch/public.key -c $ARCH_HOME/conf/arch/config.txt -s MySite -o /var/www/vhosts/MySite/docroot/arch/sitemap.dat
+
+# For normal processing, which includes processing of new locally available logs and indexing, use this
+java $opts -Djava.library.path=$LDLIBS -cp $CLASSP au.csiro.cass.arch.index.Indexer 
+
+# For a remote debugging session, use this
+#java $opts -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8001 -Djava.library.path=$LDLIBS -cp $CLASSP au.csiro.cass.arch.index.Indexer
+

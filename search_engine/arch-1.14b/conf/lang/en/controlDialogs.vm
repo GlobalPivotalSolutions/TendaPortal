@@ -1,0 +1,299 @@
+<!-- =============================================================================================== 
+                                            PROMPT DIALOG
+     =============================================================================================== -->
+
+   <div id="promptDialog" data-dojo-type="dijit.Dialog" title="Please confirm">
+      <div id="promptMessage"></div>
+      <center>
+       <table>
+         <tr>
+          <td id="tdYes"><button id="buttonYes">Yes</button></td>
+          <td id="tdNo"><button id="buttonNo">No</button></td>
+          <td id="tdCancel"><button id="buttonCancel">Cancel</button></td>
+         </tr>
+       </table>
+      </center>
+   </div>
+
+<!-- =============================================================================================== 
+                                            ERROR DIALOG
+     =============================================================================================== -->
+
+   <div id="errMessage" data-dojo-type="dijit.Dialog" title="Error">
+     <div data-dojo-type="dijit.layout.TabContainer" style="width: 500px; height: 300px;">
+        <div data-dojo-type="dijit.layout.ContentPane"  title="Message">
+          <center><div id="msgDiv"></div>
+            <button data-dojo-type="dijit.form.Button" type="button"
+                         data-dojo-props="onClick:function(){dijit.byId('errMessage').hide();}">Close</button>
+          </center>
+        </div>
+        <div data-dojo-type="dijit.layout.ContentPane" id="detailsTab" title="Details">
+          <center><div id="detailsDiv"></div>
+            <button data-dojo-type="dijit.form.Button" type="button"
+                          data-dojo-props="onClick:function(){dijit.byId('errMessage').hide();}">Close</button>
+          </center>
+        </div>
+     </div>
+   </div>
+
+<!-- =============================================================================================== 
+                                            WIZARD DIALOG
+     =============================================================================================== -->
+
+   <div id="wizard" data-dojo-type="dijit.Dialog" title="Wizard">
+      <table class="options" id="wiztable">
+      </table>
+   </div>
+
+<!-- =============================================================================================== 
+                                        START WIZARD DIALOG
+     =============================================================================================== -->
+
+   <div id="startWizard" data-dojo-type="dijit.Dialog" title="Start Wizard">
+      <table class="options">
+         <tr>
+             <td class="tipMark">
+               <a href="#" onClick="controller.startWizard('root');" title="Start root configuration wizard.">
+                       <img src="../images/root70x70.png" width=70 height=70>
+               </a>
+             </td><td>
+               <a href="#" onClick="controller.startWizard('root');" title="Start root configuration wizard.">
+                       Start root configuration wizard
+               </a>
+            </td>
+         </tr>
+         <tr>
+             <td class="tipMark">
+               <a href="#" onClick="controller.startWizard('site');" title="Start new site wizard.">
+                       <img src="../images/newsite70x70.png" width=70 height=70>
+               </a>
+             </td><td>
+               <a href="#" onClick="controller.startWizard('site');" title="Start new site wizard.">
+                       Start new site wizard
+               </a>
+            </td>
+         </tr>
+         <tr>
+             <td class="tipMark">
+               <a href="#" onClick="controller.startWizard('area');" title="Start new area wizard.">
+                       <img src="../images/newarea70x70.png" width=70 height=70>
+               </a>
+             </td><td>
+               <a href="#" onClick="controller.startWizard('area');" title="Start new area wizard.">
+                       Start new area wizard
+               </a>
+            </td>
+         </tr>
+         <tr>
+             <td class="tipMark">
+               <a href="#" onClick="dijit.byId('startWizard').hide();" title="Close this dialog.">
+                       <img src="../images/nogo.png" width=70 height=70>
+               </a>
+             </td><td>
+               <a href="#" onClick="dijit.byId('startWizard').hide();" title="Close this dialog.">
+                       Close this dialog.
+               </a>
+            </td>
+         </tr>
+      </table>
+   </div>
+
+<!-- =============================================================================================== 
+                                       START ROOT WIZARD DIALOG
+     =============================================================================================== -->
+
+   <div id="rootWizardStart" data-dojo-type="dijit.Dialog" title="Start Root Configuration Wizard">
+    <div class="dijitDialogPaneContentArea">
+      <table class="options" cellpadding=0 style="width:600px;">
+         <tr>
+             <td colspan="3">
+               This wizard will lead you through steps necessary to create a root configuration.
+   Root configuration 
+   includes parameters shared by all sites and/or used by the main indexer. The effect of this wizard
+   is exacly the same as if you would change these parameters in the tabs. Your changes will not be saved
+   unless you click on Save after quitiing the wizard.
+   <br><br>
+   The wizard will help you to configure the parameters where your input is necessary. Most Arch
+   parameters have reasonable default values, changing them is not necessary and in some cases not 
+   recommended. These parameters are not included in the wizard. You can review and change them later.
+   <br><br>
+   To index web content, you must create at least one index site containing at least one index area. After
+   finishing this root configuration wizard, new site wizard will start automatically, and then new area wizard.
+   <br><br>
+   <b>Note:</b> Arch provides a number of ways to limit access to configuration parameters and indexed data.
+   However, using this feature requires good understanding of how Arch works and very likely some modifications
+   to provided Java or PHP code to make it work with security mechanisms of your organization. <b>We strongly
+   recommend</b> that, for a start, you keep security to the minimum and introduce it only when you got
+   everything else working as expected.
+            </td>
+         </tr>
+         <tr valign="center">
+           <td>&nbsp;</td>
+           <td width="40px">
+             <a href="#" onClick="controller.quitWizard( true );" title="Quit">
+                       <img src="../images/nogo.png" width=40 height=40>
+             </a>
+           </td>
+           <td width="40px">
+             <a href="#" onClick="controller.startWizard( 'common' );" title="Start">
+                       <img src="../images/forward.png" width=40 height=40>
+             </a>
+           </td>
+         </tr>
+      </table>
+    </div>
+   </div>
+<!-- =============================================================================================== 
+                                       START SITE WIZARD DIALOG
+     =============================================================================================== -->
+
+   <div id="siteWizardStart" data-dojo-type="dijit.Dialog" title="Start Site Configuration Wizard">
+    <div class="dijitDialogPaneContentArea">
+      <table class="options" cellpadding=0 style="width:600px;">
+        <tr>
+           <td colspan="2">
+               This wizard will lead you through steps necessary to create a new site configuration.
+   <br><br>
+   The wizard will help you to configure the parameters where your input is necessary. Most Arch
+   parameters have reasonable default values, changing them is not necessary and in some cases not 
+   recommended. These parameters are not included in the wizard. You can review and change them later.
+   <br><br>
+   After you finish this wizard, a new area wizard will start automatically. At that point, you can
+   create a new area or just quit.
+   <br><br>
+   If you want to base parameters of the new site on an existing site, just select (click on) that site
+   before you start this wizard. The same works for site areas.
+            </td>
+        </tr>
+        <tr id="MySiteWarning">
+           <td colspan="2">
+             Please note that the sample site with name &quot;template&quot; is provided as an example only.
+             You should delete it after you have created real sites.
+           </td>
+        </tr>
+        <tr>
+          <td class="paramLabel">Site name</td>
+          <td class="paramText">
+                <div id="new.site.name" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" 
+                    style="border-bottom: 1px dashed blue;">
+                </div> 
+          </td>
+        </tr>
+        <tr class="helpRow" id="help.for.new.site.name"><td colspan=2>
+             Please type in a name for the new site. The name may include only alphanumeric characters
+             and must not be longer than 30 characters.
+        </td></tr>
+      </table>
+      <table class="options" cellpadding=0 style="width:600px;">
+         <tr valign="center">
+           <td>&nbsp;</td>
+           <td width="40px">
+             <a href="#" onClick="controller.quitWizard( true );" title="Quit">
+                       <img src="../images/nogo.png" width=40 height=40>
+             </a>
+           </td>
+           <td width="40px">
+             <a href="#" onClick="controller.startWizard( 'common' );" title="Start">
+                       <img src="../images/forward.png" width=40 height=40>
+             </a>
+           </td>
+         </tr>
+      </table>
+    </div>
+   </div>
+<!-- =============================================================================================== 
+                                       START AREA WIZARD DIALOG
+     =============================================================================================== -->
+
+   <div id="areaWizardStart" data-dojo-type="dijit.Dialog" title="Start Area Configuration Wizard">
+    <div class="dijitDialogPaneContentArea">
+      <table class="options" cellpadding=0 style="width:600px;">
+        <tr>
+           <td colspan="2">
+               This wizard will lead you through steps necessary to create a new area configuration.
+           </td>
+        </tr>
+        <tr>
+          <td class="paramLabel">Area name</td>
+          <td class="paramText">
+                <div id="new.area.name" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" 
+                    style="border-bottom: 1px dashed blue;">
+                </div> 
+          </td>
+        </tr>
+        <tr class="helpRow" id="help.for.site.name"><td colspan=2>
+             Please type in a name for the new area. The name may include only alphanumeric characters,
+             must be unique within the site and must not be longer than 30 characters. <br>
+             Typing &quot;loglinks&quot; creates a special area that controls indexing of links found
+             in processed log files, but not visited when crawling other areas.<br>
+             Typing &quot;bookmarks&quot; creates a special area for indexing lists of miscelaneous
+             URLs that may point to arbitrary sites. They are useful if your users have collections of
+             links that they want to be searchable, or if you want to index only a very specific set
+             of URLs. Each list is supplied as a plain text file, one URL per line. The number of such
+             files and the number of URLs in each file are not limited.
+        </td></tr>
+      </table>
+      <table class="options" cellpadding=0 style="width:600px;">
+         <tr valign="center">
+           <td>&nbsp;</td>
+           <td width="40px">
+             <a href="#" onClick="controller.quitWizard( true );" title="Quit">
+                       <img src="../images/nogo.png" width=40 height=40>
+             </a>
+           </td>
+           <td width="40px">
+             <a href="#" onClick="controller.startWizard( 'common' );" title="Start">
+                       <img src="../images/forward.png" width=40 height=40>
+             </a>
+           </td>
+         </tr>
+      </table>
+    </div>
+   </div>
+<!-- =============================================================================================== 
+                                       COMMON WIZARD BODY
+     =============================================================================================== -->
+
+   <div id="commonWizard" data-dojo-type="dijit.Dialog" title="Wizard">
+    <center>  
+      <table class="options" cellpadding=0 style="width:600px;height:300px;" id="wiztable">
+           <tr id="wiz.tr.of.param" class="wizparam">
+             <td class="paramLabel" id="wiz.param.label" align="right" style="width:200px;">Wiz param label</td>
+             <td class="paramText" id="wiz.param.td">
+                <div id="wiz.param" name="wiz.param" dojoType="dijit.InlineEditBox" editor="dijit.form.TextBox" 
+                    style="border-bottom: 1px dashed blue;">
+                </div> 
+             </td>                       
+           </tr>
+           <tr class="helpRow"><td colspan=2 id="wiz.help.for.param">
+                The log length to process, days. The latest log of this length will be taken if available.
+                E.g. if we have logs for the last 10 years, but this parameter is 365 days, only the latest
+                365 days are used to compute document scores.
+           </td></tr>
+     </table>
+     <table class="navigation" cellpadding=0>
+         <tr valign="center">
+           <td style="display:none" id="toSiteWizardTd"><input type="checkbox" id="toSiteWizard" value="yes" checked="true"/>
+                             Continue to new site wizard
+           </td>
+           <td style="display:none" id="toAreaWizardTd"><input type="checkbox" id="toAreaWizard" value="yes" checked="true"/>
+                             Continue to new area wizard
+           </td>
+         </tr>
+     </table>
+     <table class="navigation" cellpadding=0>
+         <tr valign="center">
+           <td style="width:90%;">&nbsp;</td>
+           <td style="display:none" id="toSiteWizardTd"><input type="checkbox" id="toSiteWizard" value="yes" checked="true"/>
+                             Continue to new site wizard
+           </td>
+           <td style="display:none" id="toAreaWizardTd"><input type="checkbox" id="toAreaWizard" value="yes" checked="true"/>
+                             Continue to new area wizard
+           </td>
+           <td><a href="#" onClick="controller.nextWizard(-1);" title="Back" id="back"><img src="../images/back.png"></a></td>
+           <td><a href="#" onClick="controller.quitWizard( false )" title="Quit"><img src="../images/nogo.png" id="wiz.quit"></a></td>
+           <td><a href="#" onClick="controller.nextWizard(1);" title="Next" id="next"><img src="../images/forward.png"></a></td>
+         </tr>
+     </table>
+    </center>
+   </div>

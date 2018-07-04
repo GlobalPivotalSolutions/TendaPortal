@@ -1,0 +1,4 @@
+group1:user1 user12 user2
+group2:user1 user22 user3
+group3:user1 user2 user3
+staff:user1
